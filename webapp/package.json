@@ -1,0 +1,63 @@
+{
+  "name": "pantheon",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ethersproject/providers": "^5.0.0-beta.162",
+    "@fortawesome/fontawesome-svg-core": "^1.2.22",
+    "@fortawesome/free-solid-svg-icons": "^5.10.2",
+    "@fortawesome/react-fontawesome": "^0.1.4",
+    "@material-ui/core": "^4.3.2",
+    "@material-ui/icons": "^4.2.1",
+    "@material-ui/pickers": "^3.2.4",
+    "@material-ui/styles": "^4.4.1",
+    "@web3-react/abstract-connector": "^6.0.7",
+    "@web3-react/core": "^6.0.9",
+    "@web3-react/frame-connector": "^6.0.9",
+    "@web3-react/injected-connector": "^6.0.7",
+    "classnames": "^2.2.6",
+    "create-react-app": "^3.4.1",
+    "dot-prop": "^5.0.0",
+    "ethers": "^4.0.46",
+    "history": "^4.9.0",
+    "ipfs": "^0.42.1",
+    "ipfs-css": "^0.13.1",
+    "query-string": "^6.8.3",
+    "react": "^16.13.1",
+    "react-beautiful-dnd": "^11.0.5",
+    "react-dom": "^16.13.1",
+    "react-qrcode-logo": "^2.2.0",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "^3.4.1",
+    "react-select": "^3.0.4",
+    "react-toolbox": "^2.0.0-beta.13",
+    "web3": "^1.2.6",
+    "web3-react": "^5.0.5"
+  },
+  "scripts": {
+    "start": "PORT=3001 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "generate": "rc-autocomplete"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "husky": "^4.2.5",
+    "react-autocomplete-cli": "0.0.3"
+  }
+}
