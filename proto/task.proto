@@ -1,0 +1,41 @@
+package decomx.pantheon;
+syntax = "proto3";
+
+enum TaskStatus {
+    DRAFT = 0;
+    ACCEPTED = 1;
+    COMPLETED = 2;
+    CLOSED = 3;
+}
+
+message TaskDetail {
+    required string title = 1;
+    required TaskStatus status = 2;
+    required string description = 3;
+    repeated string history = 4;
+    optional string proof = 5;
+    optional uint32 deadline = 6;
+}
+
+message Contact {
+    optional string email = 1;
+    optional string facebook = 2;
+    optional string wechat = 3;
+    optional string twitter = 4;
+    optional string phone = 5;
+}
+
+message User {
+    required bytes ethereumAddress = 1,
+    optional string name = 2,
+    optional string introduction = 3,
+    optional Contact contacts = 4,
+}
+
+message Task {
+    required TaskDetail details = 1;
+    required User owner = 2,
+    optional User worker = 3,
+    optional uint32 ownerDeposit = 4,
+    optional uint32 workerDeposit = 5,
+}
