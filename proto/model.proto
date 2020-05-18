@@ -16,22 +16,27 @@ message User {
     Contact contacts = 4;
 }
 
+message TaskContent {
+    string title = 1;
+    string description = 2;
+}
+
 message Task {
     enum TaskStatus {
         DRAFT = 0;
         ACCEPTED = 1;
-        COMPLETED = 2;
-        CLOSED = 3;
+        PENDING_REVIEW = 2;
+        FINISHED = 3;
+        CANCELLED = 4;
     }
-    string title = 1;
+    repeated string history = 1;
     TaskStatus status = 2;
-    string description = 3;
-
-    repeated string history = 4;
-    string proof = 5;
-    uint32 deadline = 6;
-    User owner = 7;
-    User worker = 8;
-    uint32 ownerDeposit = 9;
-    uint32 workerDeposit = 10;
+    TaskContent content = 3;
+    uint64 deadline = 4;
+    User owner = 5;
+    User worker = 6;
+    uint64 ownerDeposit = 7;
+    uint64 workerDeposit = 8;
+    string proofOfWork = 9;
+    string comment = 10;
 }
