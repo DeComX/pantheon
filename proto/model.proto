@@ -2,15 +2,25 @@ syntax = "proto3";
 
 package decomx.pantheon;
 
+message LinkedData {
+    enum DataType {
+        PLAIN_TEXT = 0;
+        IPFS_HASH = 1;
+        WEB_URL = 2;
+    }
+    DataType type = 1;
+    string value = 2;
+}
+
 message User {
     bytes ethereumAddress = 1;
     string name = 2;
-    string introduction = 3;
-    map<string, string> contacts = 4;
+    map<string, string> contacts = 3;
+    LinkedData details = 4;
 }
 
 message TaskDetails {
-    string details = 1; // description or ipfs hash
+    LinkedData details = 1;
     uint64 ownerDeposit = 2;
     uint64 workerDeposit = 3;
     uint64 ownerPay = 4; // default to be 0
