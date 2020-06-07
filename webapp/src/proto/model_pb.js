@@ -1055,8 +1055,8 @@ proto.decomx.pantheon.TaskOp.serializeBinaryToWriter = function(message, writer)
  * @enum {number}
  */
 proto.decomx.pantheon.TaskOp.OpType = {
-  CREATE: 0,
-  ACCEPT: 1,
+  OWNER_UPDATE: 0,
+  WORKER_ACCEPT: 1,
   REQUEST_CHANGE: 2,
   REQUEST_FINAL_REVIEW: 3,
   RECALL: 4,
@@ -1213,7 +1213,7 @@ proto.decomx.pantheon.Task.prototype.toObject = function(opt_includeInstance) {
  */
 proto.decomx.pantheon.Task.toObject = function(includeInstance, msg) {
   var f, obj = {
-    content: (f = msg.getContent()) && proto.decomx.pantheon.TaskDetails.toObject(includeInstance, f),
+    details: (f = msg.getDetails()) && proto.decomx.pantheon.TaskDetails.toObject(includeInstance, f),
     status: jspb.Message.getFieldWithDefault(msg, 2, 0),
     owner: (f = msg.getOwner()) && proto.decomx.pantheon.User.toObject(includeInstance, f),
     worker: (f = msg.getWorker()) && proto.decomx.pantheon.User.toObject(includeInstance, f),
@@ -1258,7 +1258,7 @@ proto.decomx.pantheon.Task.deserializeBinaryFromReader = function(msg, reader) {
     case 1:
       var value = new proto.decomx.pantheon.TaskDetails;
       reader.readMessage(value,proto.decomx.pantheon.TaskDetails.deserializeBinaryFromReader);
-      msg.setContent(value);
+      msg.setDetails(value);
       break;
     case 2:
       var value = /** @type {!proto.decomx.pantheon.Task.TaskStatus} */ (reader.readEnum());
@@ -1308,7 +1308,7 @@ proto.decomx.pantheon.Task.prototype.serializeBinary = function() {
  */
 proto.decomx.pantheon.Task.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getContent();
+  f = message.getDetails();
   if (f != null) {
     writer.writeMessage(
       1,
@@ -1354,19 +1354,18 @@ proto.decomx.pantheon.Task.serializeBinaryToWriter = function(message, writer) {
  * @enum {number}
  */
 proto.decomx.pantheon.Task.TaskStatus = {
-  DRAFT: 0,
-  PENDING_ACCEPT: 1,
-  PENDING_WORKER_PROOF: 2,
-  PENDING_CHANGE_REVIEW: 3,
-  PENDING_FINAL_REVIEW: 5,
-  CLOSED: 6
+  PENDING_ACCEPT: 0,
+  PENDING_WORKER_PROOF: 1,
+  PENDING_CHANGE_REVIEW: 2,
+  PENDING_FINAL_REVIEW: 3,
+  CLOSED: 4
 };
 
 /**
- * optional TaskDetails content = 1;
+ * optional TaskDetails details = 1;
  * @return {?proto.decomx.pantheon.TaskDetails}
  */
-proto.decomx.pantheon.Task.prototype.getContent = function() {
+proto.decomx.pantheon.Task.prototype.getDetails = function() {
   return /** @type{?proto.decomx.pantheon.TaskDetails} */ (
     jspb.Message.getWrapperField(this, proto.decomx.pantheon.TaskDetails, 1));
 };
@@ -1376,7 +1375,7 @@ proto.decomx.pantheon.Task.prototype.getContent = function() {
  * @param {?proto.decomx.pantheon.TaskDetails|undefined} value
  * @return {!proto.decomx.pantheon.Task} returns this
 */
-proto.decomx.pantheon.Task.prototype.setContent = function(value) {
+proto.decomx.pantheon.Task.prototype.setDetails = function(value) {
   return jspb.Message.setWrapperField(this, 1, value);
 };
 
@@ -1385,8 +1384,8 @@ proto.decomx.pantheon.Task.prototype.setContent = function(value) {
  * Clears the message field making it undefined.
  * @return {!proto.decomx.pantheon.Task} returns this
  */
-proto.decomx.pantheon.Task.prototype.clearContent = function() {
-  return this.setContent(undefined);
+proto.decomx.pantheon.Task.prototype.clearDetails = function() {
+  return this.setDetails(undefined);
 };
 
 
@@ -1394,7 +1393,7 @@ proto.decomx.pantheon.Task.prototype.clearContent = function() {
  * Returns whether this field is set.
  * @return {boolean}
  */
-proto.decomx.pantheon.Task.prototype.hasContent = function() {
+proto.decomx.pantheon.Task.prototype.hasDetails = function() {
   return jspb.Message.getField(this, 1) != null;
 };
 
