@@ -672,11 +672,10 @@ proto.decomx.pantheon.TaskDetails.prototype.toObject = function(opt_includeInsta
 proto.decomx.pantheon.TaskDetails.toObject = function(includeInstance, msg) {
   var f, obj = {
     description: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    proofofwork: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    ownerdeposit: jspb.Message.getFieldWithDefault(msg, 3, 0),
-    workerdeposit: jspb.Message.getFieldWithDefault(msg, 4, 0),
-    ownerpay: jspb.Message.getFieldWithDefault(msg, 5, 0),
-    workerpay: jspb.Message.getFieldWithDefault(msg, 6, 0)
+    ownerdeposit: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    workerdeposit: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    ownerpay: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    workerpay: jspb.Message.getFieldWithDefault(msg, 5, 0)
   };
 
   if (includeInstance) {
@@ -718,22 +717,18 @@ proto.decomx.pantheon.TaskDetails.deserializeBinaryFromReader = function(msg, re
       msg.setDescription(value);
       break;
     case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setProofofwork(value);
-      break;
-    case 3:
       var value = /** @type {number} */ (reader.readUint64());
       msg.setOwnerdeposit(value);
       break;
-    case 4:
+    case 3:
       var value = /** @type {number} */ (reader.readUint64());
       msg.setWorkerdeposit(value);
       break;
-    case 5:
+    case 4:
       var value = /** @type {number} */ (reader.readUint64());
       msg.setOwnerpay(value);
       break;
-    case 6:
+    case 5:
       var value = /** @type {number} */ (reader.readUint64());
       msg.setWorkerpay(value);
       break;
@@ -773,38 +768,31 @@ proto.decomx.pantheon.TaskDetails.serializeBinaryToWriter = function(message, wr
       f
     );
   }
-  f = message.getProofofwork();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
   f = message.getOwnerdeposit();
   if (f !== 0) {
     writer.writeUint64(
-      3,
+      2,
       f
     );
   }
   f = message.getWorkerdeposit();
   if (f !== 0) {
     writer.writeUint64(
-      4,
+      3,
       f
     );
   }
   f = message.getOwnerpay();
   if (f !== 0) {
     writer.writeUint64(
-      5,
+      4,
       f
     );
   }
   f = message.getWorkerpay();
   if (f !== 0) {
     writer.writeUint64(
-      6,
+      5,
       f
     );
   }
@@ -830,29 +818,11 @@ proto.decomx.pantheon.TaskDetails.prototype.setDescription = function(value) {
 
 
 /**
- * optional string proofOfWork = 2;
- * @return {string}
- */
-proto.decomx.pantheon.TaskDetails.prototype.getProofofwork = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.decomx.pantheon.TaskDetails} returns this
- */
-proto.decomx.pantheon.TaskDetails.prototype.setProofofwork = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-/**
- * optional uint64 ownerDeposit = 3;
+ * optional uint64 ownerDeposit = 2;
  * @return {number}
  */
 proto.decomx.pantheon.TaskDetails.prototype.getOwnerdeposit = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
@@ -861,16 +831,16 @@ proto.decomx.pantheon.TaskDetails.prototype.getOwnerdeposit = function() {
  * @return {!proto.decomx.pantheon.TaskDetails} returns this
  */
 proto.decomx.pantheon.TaskDetails.prototype.setOwnerdeposit = function(value) {
-  return jspb.Message.setProto3IntField(this, 3, value);
+  return jspb.Message.setProto3IntField(this, 2, value);
 };
 
 
 /**
- * optional uint64 workerDeposit = 4;
+ * optional uint64 workerDeposit = 3;
  * @return {number}
  */
 proto.decomx.pantheon.TaskDetails.prototype.getWorkerdeposit = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
@@ -879,16 +849,16 @@ proto.decomx.pantheon.TaskDetails.prototype.getWorkerdeposit = function() {
  * @return {!proto.decomx.pantheon.TaskDetails} returns this
  */
 proto.decomx.pantheon.TaskDetails.prototype.setWorkerdeposit = function(value) {
-  return jspb.Message.setProto3IntField(this, 4, value);
+  return jspb.Message.setProto3IntField(this, 3, value);
 };
 
 
 /**
- * optional uint64 ownerPay = 5;
+ * optional uint64 ownerPay = 4;
  * @return {number}
  */
 proto.decomx.pantheon.TaskDetails.prototype.getOwnerpay = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
@@ -897,16 +867,16 @@ proto.decomx.pantheon.TaskDetails.prototype.getOwnerpay = function() {
  * @return {!proto.decomx.pantheon.TaskDetails} returns this
  */
 proto.decomx.pantheon.TaskDetails.prototype.setOwnerpay = function(value) {
-  return jspb.Message.setProto3IntField(this, 5, value);
+  return jspb.Message.setProto3IntField(this, 4, value);
 };
 
 
 /**
- * optional uint64 workerPay = 6;
+ * optional uint64 workerPay = 5;
  * @return {number}
  */
 proto.decomx.pantheon.TaskDetails.prototype.getWorkerpay = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
@@ -915,7 +885,7 @@ proto.decomx.pantheon.TaskDetails.prototype.getWorkerpay = function() {
  * @return {!proto.decomx.pantheon.TaskDetails} returns this
  */
 proto.decomx.pantheon.TaskDetails.prototype.setWorkerpay = function(value) {
-  return jspb.Message.setProto3IntField(this, 6, value);
+  return jspb.Message.setProto3IntField(this, 5, value);
 };
 
 
@@ -1087,13 +1057,12 @@ proto.decomx.pantheon.TaskOp.serializeBinaryToWriter = function(message, writer)
 proto.decomx.pantheon.TaskOp.OpType = {
   CREATE: 0,
   ACCEPT: 1,
-  REQUEST_TASK_DETAILS_CHANGE: 2,
+  REQUEST_CHANGE: 2,
   REQUEST_FINAL_REVIEW: 3,
   RECALL: 4,
   APPROVE: 5,
   REJECT: 6,
-  CLAIM: 7,
-  QUIT: 8
+  CLAIM: 7
 };
 
 /**
@@ -1388,11 +1357,9 @@ proto.decomx.pantheon.Task.TaskStatus = {
   DRAFT: 0,
   PENDING_ACCEPT: 1,
   PENDING_WORKER_PROOF: 2,
-  PENDING_WORKER_CHANGE_REVIEW: 3,
-  PENDING_OWNER_CHANGE_REVIEW: 4,
-  PENDING_OWNER_FINAL_REVIEW: 5,
-  CLOSED: 6,
-  CANCELLED: 7
+  PENDING_CHANGE_REVIEW: 3,
+  PENDING_FINAL_REVIEW: 5,
+  CLOSED: 6
 };
 
 /**
