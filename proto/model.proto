@@ -3,21 +3,14 @@ syntax = "proto3";
 package decomx.pantheon;
 
 message User {
-    message Contact {
-        string phone = 1;
-        string email = 2;
-        string facebook = 3;
-        string wechat = 4;
-        string twitter = 5;
-    }
     bytes ethereumAddress = 1;
     string name = 2;
     string introduction = 3;
-    Contact contacts = 4;
+    map<string, string> contacts = 4;
 }
 
 message TaskDetails {
-    string description = 1;
+    string details = 1; // description or ipfs hash
     uint64 ownerDeposit = 2;
     uint64 workerDeposit = 3;
     uint64 ownerPay = 4; // default to be 0
@@ -52,7 +45,7 @@ message Task {
     }
     TaskDetails details = 1;
     TaskStatus status = 2;
-    User owner = 3;
-    User worker = 4;
-    repeated TaskOp ops = 5;
+    bytes owner = 3;
+    bytes worker = 4;
+    repeated TaskOp op = 5;
 }
