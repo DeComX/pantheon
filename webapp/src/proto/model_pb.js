@@ -989,8 +989,7 @@ proto.decomx.pantheon.Task.toObject = function(includeInstance, msg) {
     workerdeposit: jspb.Message.getFieldWithDefault(msg, 7, 0),
     finishdeadline: jspb.Message.getFieldWithDefault(msg, 8, 0),
     reviewdeadline: jspb.Message.getFieldWithDefault(msg, 9, 0),
-    payment: jspb.Message.getFieldWithDefault(msg, 10, 0),
-    status: jspb.Message.getFieldWithDefault(msg, 11, 0)
+    status: jspb.Message.getFieldWithDefault(msg, 10, 0)
   };
 
   if (includeInstance) {
@@ -1069,10 +1068,6 @@ proto.decomx.pantheon.Task.deserializeBinaryFromReader = function(msg, reader) {
       msg.setReviewdeadline(value);
       break;
     case 10:
-      var value = /** @type {number} */ (reader.readUint64());
-      msg.setPayment(value);
-      break;
-    case 11:
       var value = /** @type {!proto.decomx.pantheon.Task.TaskStatus} */ (reader.readEnum());
       msg.setStatus(value);
       break;
@@ -1173,17 +1168,10 @@ proto.decomx.pantheon.Task.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getPayment();
-  if (f !== 0) {
-    writer.writeUint64(
-      10,
-      f
-    );
-  }
   f = message.getStatus();
   if (f !== 0.0) {
     writer.writeEnum(
-      11,
+      10,
       f
     );
   }
@@ -1460,29 +1448,11 @@ proto.decomx.pantheon.Task.prototype.setReviewdeadline = function(value) {
 
 
 /**
- * optional uint64 payment = 10;
- * @return {number}
- */
-proto.decomx.pantheon.Task.prototype.getPayment = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.decomx.pantheon.Task} returns this
- */
-proto.decomx.pantheon.Task.prototype.setPayment = function(value) {
-  return jspb.Message.setProto3IntField(this, 10, value);
-};
-
-
-/**
- * optional TaskStatus status = 11;
+ * optional TaskStatus status = 10;
  * @return {!proto.decomx.pantheon.Task.TaskStatus}
  */
 proto.decomx.pantheon.Task.prototype.getStatus = function() {
-  return /** @type {!proto.decomx.pantheon.Task.TaskStatus} */ (jspb.Message.getFieldWithDefault(this, 11, 0));
+  return /** @type {!proto.decomx.pantheon.Task.TaskStatus} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
 };
 
 
@@ -1491,7 +1461,7 @@ proto.decomx.pantheon.Task.prototype.getStatus = function() {
  * @return {!proto.decomx.pantheon.Task} returns this
  */
 proto.decomx.pantheon.Task.prototype.setStatus = function(value) {
-  return jspb.Message.setProto3EnumField(this, 11, value);
+  return jspb.Message.setProto3EnumField(this, 10, value);
 };
 
 
@@ -3728,8 +3698,7 @@ proto.decomx.pantheon.QuitOp.prototype.toObject = function(opt_includeInstance) 
 proto.decomx.pantheon.QuitOp.toObject = function(includeInstance, msg) {
   var f, obj = {
     index: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    comment: (f = msg.getComment()) && proto.decomx.pantheon.LinkedData.toObject(includeInstance, f),
-    payment: jspb.Message.getFieldWithDefault(msg, 3, 0)
+    comment: (f = msg.getComment()) && proto.decomx.pantheon.LinkedData.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -3775,10 +3744,6 @@ proto.decomx.pantheon.QuitOp.deserializeBinaryFromReader = function(msg, reader)
       reader.readMessage(value,proto.decomx.pantheon.LinkedData.deserializeBinaryFromReader);
       msg.setComment(value);
       break;
-    case 3:
-      var value = /** @type {number} */ (reader.readUint64());
-      msg.setPayment(value);
-      break;
     default:
       reader.skipField();
       break;
@@ -3821,13 +3786,6 @@ proto.decomx.pantheon.QuitOp.serializeBinaryToWriter = function(message, writer)
       2,
       f,
       proto.decomx.pantheon.LinkedData.serializeBinaryToWriter
-    );
-  }
-  f = message.getPayment();
-  if (f !== 0) {
-    writer.writeUint64(
-      3,
-      f
     );
   }
 };
@@ -3885,24 +3843,6 @@ proto.decomx.pantheon.QuitOp.prototype.clearComment = function() {
  */
 proto.decomx.pantheon.QuitOp.prototype.hasComment = function() {
   return jspb.Message.getField(this, 2) != null;
-};
-
-
-/**
- * optional uint64 payment = 3;
- * @return {number}
- */
-proto.decomx.pantheon.QuitOp.prototype.getPayment = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.decomx.pantheon.QuitOp} returns this
- */
-proto.decomx.pantheon.QuitOp.prototype.setPayment = function(value) {
-  return jspb.Message.setProto3IntField(this, 3, value);
 };
 
 

@@ -51,8 +51,7 @@ message Task {
     uint64 workerDeposit = 7;
     uint64 finishDeadline = 8;
     uint64 reviewDeadline = 9;
-    uint64 payment = 10; // amount of money paied to worker, rest will be returned to owner
-    TaskStatus status = 11;
+    TaskStatus status = 10;
 }
 
 /***********************/
@@ -121,5 +120,4 @@ message ApproveOp {
 message QuitOp {
     uint32 index = 1;
     LinkedData comment = 2;
-    uint64 payment = 3;
 }
