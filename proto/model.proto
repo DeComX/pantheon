@@ -12,37 +12,26 @@ message LinkedData {
     string value = 2;
 }
 
+message Contact {
+    enum ContactType {
+        PHONE = 0;
+        EMAIL = 1;
+        FACEBOOK = 2;
+        WECHAT = 3;
+        WHATSAPP = 4;
+        DISCORD = 5;
+        TELEGRAM = 6;
+        OTHTER = 7;
+    }
+    ContactType type = 1;
+    string value = 2;
+}
+
 message User {
     bytes ethereumAddress = 1;
     string name = 2;
-    map<string, string> contacts = 3;
-    LinkedData details = 4;
-}
-
-message TaskDetails {
-    LinkedData details = 1;
-    uint64 ownerDeposit = 2;
-    uint64 workerDeposit = 3;
-    uint64 ownerPay = 4; // default to be 0
-    uint64 workerPay = 5; // default to be owner deposit + worker deposit
-}
-
-message TaskOp {
-    enum OpType {
-        OWNER_UPDATE = 0; // task update before accept
-        WORKER_ACCEPT = 1;
-        REQUEST_CHANGE = 2;
-        REQUEST_FINAL_REVIEW = 3;
-        RECALL = 4;
-        APPROVE = 5;
-        REJECT = 6;
-        CLAIM = 7; // quit the task and claim money
-    }
-    OpType type = 1;
-    uint32 index = 2;
-    uint64 deadline = 3;
-    string comments = 4; // extra comments, normally a hash of ipfs
-    TaskDetails override = 5; // request change
+    LinkedData details = 3;
+    repeated Contact contact = 4;
 }
 
 message Task {
@@ -53,9 +42,80 @@ message Task {
         PENDING_FINAL_REVIEW = 3;
         CLOSED = 4; // task finished or cancelled
     }
-    TaskDetails details = 1;
-    TaskStatus status = 2;
-    bytes owner = 3;
-    bytes worker = 4;
-    repeated TaskOp op = 5;
+    User owner = 1;
+    User worker = 2;
+    repeated TaskOp op = 3;
+    LinkedData taskDetails = 4;
+    LinkedData proofOfWork = 5;
+    uint64 ownerDeposit = 6;
+    uint64 workerDeposit = 7;
+    uint64 deadline = 8; // deadline of current status
+    uint64 payment = 9; // amount of money paied to worker, rest will be returned to owner
+    TaskStatus status = 10;
+}
+
+/***********************/
+/*** Task Operations ***/
+/***********************/
+
+message TaskOp {
+    oneof task_op {
+        OwnerUpdateOp ownerUpdate = 1;
+        WorkerAcceptOp workerAccept = 2;
+        RequestChangeOp requestChange = 3;
+        RequestForFinalReviewOp requestForFinalReview = 4;
+        RecallOp recall = 5;
+        RejectOp reject = 6;
+        ApproveOp approve = 7;
+        QuitOp quit = 8;
+    }
+}
+
+message OwnerUpdateOp {
+    uint32 index = 1;
+    LinkedData comment = 2;
+    LinkedData taskDetails = 3;
+    uint64 ownerDeposit = 4;
+    uint64 workerDeposit = 5;
+    uint64 deadline = 6;
+}
+
+message WorkerAcceptOp {
+    uint32 index = 1;
+    LinkedData comment = 2;
+}
+
+message RequestChangeOp {
+    uint32 index = 1;
+    LinkedData comment = 2;
+    LinkedData taskDetails = 3;
+    uint64 ownerDeposit = 4;
+    uint64 workerDeposit = 5;
+    uint64 deadline = 6;
+}
+
+message RequestForFinalReviewOp {
+    uint32 index = 1;
+    LinkedData comment = 2;
+    LinkedData proofOfWork = 3;
+}
+
+message RecallOp {
+    uint32 index = 1;
+    LinkedData comment = 2;
+}
+
+message RejectOp {
+    uint32 index = 1;
+    LinkedData comment = 2;
+}
+
+message ApproveOp {
+    uint32 index = 1;
+    LinkedData comment = 2;
+}
+
+message QuitOp {
+    uint32 index = 1;
+    LinkedData comment = 2;
 }
