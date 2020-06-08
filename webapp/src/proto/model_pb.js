@@ -987,9 +987,10 @@ proto.decomx.pantheon.Task.toObject = function(includeInstance, msg) {
     proofofwork: (f = msg.getProofofwork()) && proto.decomx.pantheon.LinkedData.toObject(includeInstance, f),
     ownerdeposit: jspb.Message.getFieldWithDefault(msg, 6, 0),
     workerdeposit: jspb.Message.getFieldWithDefault(msg, 7, 0),
-    deadline: jspb.Message.getFieldWithDefault(msg, 8, 0),
-    payment: jspb.Message.getFieldWithDefault(msg, 9, 0),
-    status: jspb.Message.getFieldWithDefault(msg, 10, 0)
+    finishdeadline: jspb.Message.getFieldWithDefault(msg, 8, 0),
+    reviewdeadline: jspb.Message.getFieldWithDefault(msg, 9, 0),
+    payment: jspb.Message.getFieldWithDefault(msg, 10, 0),
+    status: jspb.Message.getFieldWithDefault(msg, 11, 0)
   };
 
   if (includeInstance) {
@@ -1061,13 +1062,17 @@ proto.decomx.pantheon.Task.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 8:
       var value = /** @type {number} */ (reader.readUint64());
-      msg.setDeadline(value);
+      msg.setFinishdeadline(value);
       break;
     case 9:
       var value = /** @type {number} */ (reader.readUint64());
-      msg.setPayment(value);
+      msg.setReviewdeadline(value);
       break;
     case 10:
+      var value = /** @type {number} */ (reader.readUint64());
+      msg.setPayment(value);
+      break;
+    case 11:
       var value = /** @type {!proto.decomx.pantheon.Task.TaskStatus} */ (reader.readEnum());
       msg.setStatus(value);
       break;
@@ -1154,24 +1159,31 @@ proto.decomx.pantheon.Task.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getDeadline();
+  f = message.getFinishdeadline();
   if (f !== 0) {
     writer.writeUint64(
       8,
       f
     );
   }
-  f = message.getPayment();
+  f = message.getReviewdeadline();
   if (f !== 0) {
     writer.writeUint64(
       9,
       f
     );
   }
+  f = message.getPayment();
+  if (f !== 0) {
+    writer.writeUint64(
+      10,
+      f
+    );
+  }
   f = message.getStatus();
   if (f !== 0.0) {
     writer.writeEnum(
-      10,
+      11,
       f
     );
   }
@@ -1412,10 +1424,10 @@ proto.decomx.pantheon.Task.prototype.setWorkerdeposit = function(value) {
 
 
 /**
- * optional uint64 deadline = 8;
+ * optional uint64 finishDeadline = 8;
  * @return {number}
  */
-proto.decomx.pantheon.Task.prototype.getDeadline = function() {
+proto.decomx.pantheon.Task.prototype.getFinishdeadline = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 8, 0));
 };
 
@@ -1424,16 +1436,16 @@ proto.decomx.pantheon.Task.prototype.getDeadline = function() {
  * @param {number} value
  * @return {!proto.decomx.pantheon.Task} returns this
  */
-proto.decomx.pantheon.Task.prototype.setDeadline = function(value) {
+proto.decomx.pantheon.Task.prototype.setFinishdeadline = function(value) {
   return jspb.Message.setProto3IntField(this, 8, value);
 };
 
 
 /**
- * optional uint64 payment = 9;
+ * optional uint64 reviewDeadline = 9;
  * @return {number}
  */
-proto.decomx.pantheon.Task.prototype.getPayment = function() {
+proto.decomx.pantheon.Task.prototype.getReviewdeadline = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 9, 0));
 };
 
@@ -1442,17 +1454,35 @@ proto.decomx.pantheon.Task.prototype.getPayment = function() {
  * @param {number} value
  * @return {!proto.decomx.pantheon.Task} returns this
  */
-proto.decomx.pantheon.Task.prototype.setPayment = function(value) {
+proto.decomx.pantheon.Task.prototype.setReviewdeadline = function(value) {
   return jspb.Message.setProto3IntField(this, 9, value);
 };
 
 
 /**
- * optional TaskStatus status = 10;
+ * optional uint64 payment = 10;
+ * @return {number}
+ */
+proto.decomx.pantheon.Task.prototype.getPayment = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.decomx.pantheon.Task} returns this
+ */
+proto.decomx.pantheon.Task.prototype.setPayment = function(value) {
+  return jspb.Message.setProto3IntField(this, 10, value);
+};
+
+
+/**
+ * optional TaskStatus status = 11;
  * @return {!proto.decomx.pantheon.Task.TaskStatus}
  */
 proto.decomx.pantheon.Task.prototype.getStatus = function() {
-  return /** @type {!proto.decomx.pantheon.Task.TaskStatus} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
+  return /** @type {!proto.decomx.pantheon.Task.TaskStatus} */ (jspb.Message.getFieldWithDefault(this, 11, 0));
 };
 
 
@@ -1461,7 +1491,7 @@ proto.decomx.pantheon.Task.prototype.getStatus = function() {
  * @return {!proto.decomx.pantheon.Task} returns this
  */
 proto.decomx.pantheon.Task.prototype.setStatus = function(value) {
-  return jspb.Message.setProto3EnumField(this, 10, value);
+  return jspb.Message.setProto3EnumField(this, 11, value);
 };
 
 
@@ -2042,7 +2072,8 @@ proto.decomx.pantheon.OwnerUpdateOp.toObject = function(includeInstance, msg) {
     taskdetails: (f = msg.getTaskdetails()) && proto.decomx.pantheon.LinkedData.toObject(includeInstance, f),
     ownerdeposit: jspb.Message.getFieldWithDefault(msg, 4, 0),
     workerdeposit: jspb.Message.getFieldWithDefault(msg, 5, 0),
-    deadline: jspb.Message.getFieldWithDefault(msg, 6, 0)
+    finishdeadline: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    reviewdeadline: jspb.Message.getFieldWithDefault(msg, 7, 0)
   };
 
   if (includeInstance) {
@@ -2103,7 +2134,11 @@ proto.decomx.pantheon.OwnerUpdateOp.deserializeBinaryFromReader = function(msg, 
       break;
     case 6:
       var value = /** @type {number} */ (reader.readUint64());
-      msg.setDeadline(value);
+      msg.setFinishdeadline(value);
+      break;
+    case 7:
+      var value = /** @type {number} */ (reader.readUint64());
+      msg.setReviewdeadline(value);
       break;
     default:
       reader.skipField();
@@ -2171,10 +2206,17 @@ proto.decomx.pantheon.OwnerUpdateOp.serializeBinaryToWriter = function(message, 
       f
     );
   }
-  f = message.getDeadline();
+  f = message.getFinishdeadline();
   if (f !== 0) {
     writer.writeUint64(
       6,
+      f
+    );
+  }
+  f = message.getReviewdeadline();
+  if (f !== 0) {
+    writer.writeUint64(
+      7,
       f
     );
   }
@@ -2310,10 +2352,10 @@ proto.decomx.pantheon.OwnerUpdateOp.prototype.setWorkerdeposit = function(value)
 
 
 /**
- * optional uint64 deadline = 6;
+ * optional uint64 finishDeadline = 6;
  * @return {number}
  */
-proto.decomx.pantheon.OwnerUpdateOp.prototype.getDeadline = function() {
+proto.decomx.pantheon.OwnerUpdateOp.prototype.getFinishdeadline = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
@@ -2322,8 +2364,26 @@ proto.decomx.pantheon.OwnerUpdateOp.prototype.getDeadline = function() {
  * @param {number} value
  * @return {!proto.decomx.pantheon.OwnerUpdateOp} returns this
  */
-proto.decomx.pantheon.OwnerUpdateOp.prototype.setDeadline = function(value) {
+proto.decomx.pantheon.OwnerUpdateOp.prototype.setFinishdeadline = function(value) {
   return jspb.Message.setProto3IntField(this, 6, value);
+};
+
+
+/**
+ * optional uint64 reviewDeadline = 7;
+ * @return {number}
+ */
+proto.decomx.pantheon.OwnerUpdateOp.prototype.getReviewdeadline = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.decomx.pantheon.OwnerUpdateOp} returns this
+ */
+proto.decomx.pantheon.OwnerUpdateOp.prototype.setReviewdeadline = function(value) {
+  return jspb.Message.setProto3IntField(this, 7, value);
 };
 
 
@@ -2545,7 +2605,8 @@ proto.decomx.pantheon.RequestChangeOp.toObject = function(includeInstance, msg) 
     taskdetails: (f = msg.getTaskdetails()) && proto.decomx.pantheon.LinkedData.toObject(includeInstance, f),
     ownerdeposit: jspb.Message.getFieldWithDefault(msg, 4, 0),
     workerdeposit: jspb.Message.getFieldWithDefault(msg, 5, 0),
-    deadline: jspb.Message.getFieldWithDefault(msg, 6, 0)
+    finishdeadline: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    reviewdeadline: jspb.Message.getFieldWithDefault(msg, 7, 0)
   };
 
   if (includeInstance) {
@@ -2606,7 +2667,11 @@ proto.decomx.pantheon.RequestChangeOp.deserializeBinaryFromReader = function(msg
       break;
     case 6:
       var value = /** @type {number} */ (reader.readUint64());
-      msg.setDeadline(value);
+      msg.setFinishdeadline(value);
+      break;
+    case 7:
+      var value = /** @type {number} */ (reader.readUint64());
+      msg.setReviewdeadline(value);
       break;
     default:
       reader.skipField();
@@ -2674,10 +2739,17 @@ proto.decomx.pantheon.RequestChangeOp.serializeBinaryToWriter = function(message
       f
     );
   }
-  f = message.getDeadline();
+  f = message.getFinishdeadline();
   if (f !== 0) {
     writer.writeUint64(
       6,
+      f
+    );
+  }
+  f = message.getReviewdeadline();
+  if (f !== 0) {
+    writer.writeUint64(
+      7,
       f
     );
   }
@@ -2813,10 +2885,10 @@ proto.decomx.pantheon.RequestChangeOp.prototype.setWorkerdeposit = function(valu
 
 
 /**
- * optional uint64 deadline = 6;
+ * optional uint64 finishDeadline = 6;
  * @return {number}
  */
-proto.decomx.pantheon.RequestChangeOp.prototype.getDeadline = function() {
+proto.decomx.pantheon.RequestChangeOp.prototype.getFinishdeadline = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
@@ -2825,8 +2897,26 @@ proto.decomx.pantheon.RequestChangeOp.prototype.getDeadline = function() {
  * @param {number} value
  * @return {!proto.decomx.pantheon.RequestChangeOp} returns this
  */
-proto.decomx.pantheon.RequestChangeOp.prototype.setDeadline = function(value) {
+proto.decomx.pantheon.RequestChangeOp.prototype.setFinishdeadline = function(value) {
   return jspb.Message.setProto3IntField(this, 6, value);
+};
+
+
+/**
+ * optional uint64 reviewDeadline = 7;
+ * @return {number}
+ */
+proto.decomx.pantheon.RequestChangeOp.prototype.getReviewdeadline = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.decomx.pantheon.RequestChangeOp} returns this
+ */
+proto.decomx.pantheon.RequestChangeOp.prototype.setReviewdeadline = function(value) {
+  return jspb.Message.setProto3IntField(this, 7, value);
 };
 
 
@@ -3638,7 +3728,8 @@ proto.decomx.pantheon.QuitOp.prototype.toObject = function(opt_includeInstance) 
 proto.decomx.pantheon.QuitOp.toObject = function(includeInstance, msg) {
   var f, obj = {
     index: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    comment: (f = msg.getComment()) && proto.decomx.pantheon.LinkedData.toObject(includeInstance, f)
+    comment: (f = msg.getComment()) && proto.decomx.pantheon.LinkedData.toObject(includeInstance, f),
+    payment: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -3684,6 +3775,10 @@ proto.decomx.pantheon.QuitOp.deserializeBinaryFromReader = function(msg, reader)
       reader.readMessage(value,proto.decomx.pantheon.LinkedData.deserializeBinaryFromReader);
       msg.setComment(value);
       break;
+    case 3:
+      var value = /** @type {number} */ (reader.readUint64());
+      msg.setPayment(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -3726,6 +3821,13 @@ proto.decomx.pantheon.QuitOp.serializeBinaryToWriter = function(message, writer)
       2,
       f,
       proto.decomx.pantheon.LinkedData.serializeBinaryToWriter
+    );
+  }
+  f = message.getPayment();
+  if (f !== 0) {
+    writer.writeUint64(
+      3,
+      f
     );
   }
 };
@@ -3783,6 +3885,24 @@ proto.decomx.pantheon.QuitOp.prototype.clearComment = function() {
  */
 proto.decomx.pantheon.QuitOp.prototype.hasComment = function() {
   return jspb.Message.getField(this, 2) != null;
+};
+
+
+/**
+ * optional uint64 payment = 3;
+ * @return {number}
+ */
+proto.decomx.pantheon.QuitOp.prototype.getPayment = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.decomx.pantheon.QuitOp} returns this
+ */
+proto.decomx.pantheon.QuitOp.prototype.setPayment = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
 };
 
 
