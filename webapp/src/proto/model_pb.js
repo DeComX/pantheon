@@ -1,4 +1,5 @@
 // source: model.proto
+/* eslint-disable */
 /**
  * @fileoverview
  * @enhanceable
