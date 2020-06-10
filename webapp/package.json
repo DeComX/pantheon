@@ -15,6 +15,7 @@
     "classnames": "^2.2.6",
     "create-react-app": "^3.4.1",
     "ethers": "^4.0.46",
+    "fs": "0.0.1-security",
     "google-protobuf": "^3.12.0",
     "history": "^4.9.0",
     "ipfs": "^0.42.1",

@@ -1,3 +1,4 @@
+/* eslint-disable */
 // source: model.proto
 /**
  * @fileoverview
