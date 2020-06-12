@@ -1,46 +1,33 @@
-const model = require('../../proto/model_pb.js');
-
-const CONTACT_TYPE_MAP = {
-  model.Contact.ContactType.PHONE: "phone",
-  model.Contact.ContactType.EMAIL: "email",
-  model.Contact.ContactType.FACEBOOK: "facebook",
-  model.Contact.ContactType.WECHAT: "wechat",
-  model.Contact.ContactType.WHATSAPP: "whatsapp",
-  model.Contact.ContactType.DISCORD: "discord",
-  model.Contact.ContactType.TELEGRAM: "telegram",
-  model.Contact.ContactType.OTHER: "other"
-};
-
-// [[type1, value1], [type2, value2], ...]
-export const createContacts = (contactArray) => {
-  return contactList.map([type, value] => createContact(type, value));
-}
+const model = require('../proto/model_pb.js');
 
 // ethAddress: bytes
 // name: string
 // details: LinkedData
 // contacts: [Contact]
-export const create = (ethAddress, name, details, contacts) => {
+export const createUser = (userObj) => {
   const user = new model.User();
-  user.setEthereumaddress(ethAddress); // required
-  if (name) {
-      user.setName(name);
+  user.setEthereumaddress(userObj['ethereumAddress']); // required
+  if (userObj['name'] !== undefined) {
+    user.setName(userObj['name']);
   }
-  if (details) {
-      user.setDetails(details);
+  if (userObj['details'] !== undefined) {
+    user.setDetails(userObj['details']);
   }
-  if (contacts) {
-      user.setContactList(contacts);
+  if (userObj['contacts'] !== undefined) {
+    user.setContactList(userObj['contacts']);
   }
   return user;
 }
 
-export const update = (user, details, contacts) => {
-  if (details) {
-      user.setDetails(details);
+export const updateUser = (user, update) => {
+  if (update['name'] !== undefined) {
+    user.setName(update['name']);
   }
-  if (contacts) {
-      user.setContactList(contacts);
+  if (update['details'] !== undefined) {
+    user.setDetails(update['details']);
+  }
+  if (update['contacts'] !== undefined) {
+    user.setContactList(update['contacts']);
   }
   return user;
 }
@@ -54,9 +41,23 @@ export const createContact = (type, value) => {
   return contact;
 }
 
+// [[type1, value1], [type2, value2], ...]
+export const createContacts = (contactArray) => {
+  return contactArray.map(([type, value]) => createContact(type, value));
+}
+
+const CONTACT_TYPE_MAP = {
+  [model.Contact.ContactType.PHONE]: "phone",
+  [model.Contact.ContactType.EMAIL]: "email",
+  [model.Contact.ContactType.FACEBOOK]: "facebook",
+  [model.Contact.ContactType.WECHAT]: "wechat",
+  [model.Contact.ContactType.WHATSAPP]: "whatsapp",
+  [model.Contact.ContactType.DISCORD]: "discord",
+  [model.Contact.ContactType.TELEGRAM]: "telegram",
+  [model.Contact.ContactType.OTHER]: "other"
+};
+
 // type: Contact.ContactType, e.g. Contact.ContactType.PHONE
 export const contactTypeToString = (type) => {
   return CONTACT_TYPE_MAP[type];
 }
-
-
