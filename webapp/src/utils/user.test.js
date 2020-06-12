@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createLinkedData } from './common';
+import { ethers } from 'ethers';
 import {
   createUser,
   updateUser,
@@ -8,7 +9,6 @@ import {
   createContacts,
   contactTypeToString
 } from './user';
-import { ethers } from 'ethers';
 
 const model = require('../proto/model_pb.js');
 const contactType = model.Contact.ContactType;

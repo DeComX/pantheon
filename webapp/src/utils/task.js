@@ -1,17 +1,18 @@
 const model = require('../proto/model_pb.js');
 
-export const create = (owner, worker, taskObj) => {
+export const createTask = (owner, worker, taskObj) => {
   const task = new model.Task();
   task.setOwner(owner);
   task.setWorker(worker);
-  task.setTaskDetails(taskObj['details']);
-  task.setOwnerDeposit(taskObj['owner_deposit']);
-  task.setWorkerDeposit(taskObj['worker_deposit']);
-  task.setFinishDeadline(taskObj['finish_deadline']);
-  task.setReviewDeadline(taskObj['review_deadline']);
+  task.setTaskdetails(taskObj['details']);
+  task.setOwnerdeposit(taskObj['owner_deposit']);
+  task.setWorkerdeposit(taskObj['worker_deposit']);
+  task.setFinishdeadline(taskObj['finish_deadline']);
+  task.setReviewdeadline(taskObj['review_deadline']);
   return task;
 }
 
+// TODO: distinguish unset and reset for integer fields
 export const createOwnerUpdateOp = (index, comment, update) => {
   const taskOp = new model.TaskOp();
   const op = new model.OwnerUpdateOp();
@@ -20,21 +21,21 @@ export const createOwnerUpdateOp = (index, comment, update) => {
     op.setComment(comment);
   }
   if (update['details'] !== undefined) {
-    op.setTaskDetails(update['details']);
+    op.setTaskdetails(update['details']);
   }
   if (update['owner_deposit'] !== undefined) {
-    op.setOwnerDeposit(update['owner_deposit']);
+    op.setOwnerdeposit(update['owner_deposit']);
   }
   if (update['worker_deposit'] !== undefined) {
-    op.setWorkerDeposit(update['worker_deposit']);
+    op.setWorkerdeposit(update['worker_deposit']);
   }
   if (update['finish_deadline'] !== undefined) {
-    op.setFinishDeadline(update['finish_deadline']);
+    op.setFinishdeadline(update['finish_deadline']);
   }
   if (update['review_deadline'] !== undefined) {
-    op.setReviewDeadline(update['review_deadline']);
+    op.setReviewdeadline(update['review_deadline']);
   }
-  taskOp.setOwnerUpdate(op);
+  taskOp.setOwnerupdate(op);
   return taskOp;
 }
 
@@ -47,10 +48,11 @@ export const createWorkerAcceptOp = (
   if (comment) {
     op.setComment(comment);
   }
-  taskOp.setWorkerAccept(op)
+  taskOp.setWorkeraccept(op)
   return taskOp;
 }
 
+// TODO: distinguish unset and reset for integer fields
 export const createRequestChangeOp = (index, comment, update) => {
   const taskOp = new model.TaskOp();
   const op = new model.RequestChangeOp();
@@ -59,29 +61,27 @@ export const createRequestChangeOp = (index, comment, update) => {
     op.setComment(comment);
   }
   if (update['details']) {
-    op.setTaskDetails(update['details']);
+    op.setTaskdetails(update['details']);
   }
   // owner deposit could be 0
   if (update['owner_deposit'] !== undefined) {
-    op.setOwnerDeposit(update['owner_deposit']);
+    op.setOwnerdeposit(update['owner_deposit']);
   }
   // worker deposit could be 0
   if (update['worker_deposit'] !== undefined) {
-    op.setWorkerDeposit(update['worker_deposit']);
+    op.setWorkerdeposit(update['worker_deposit']);
   }
   if (update['finish_deadline'] !== undefined) {
-    op.setFinishDeadline(update['finish_deadline']);
+    op.setFinishdeadline(update['finish_deadline']);
   }
   if (update['review_deadline'] != undefined) {
-    op.setReviewDeadline(reviewDeadline);
+    op.setReviewdeadline(update['review_deadline']);
   }
-  taskOp.setRequestChange(op)
+  taskOp.setRequestchange(op)
   return taskOp;
 }
 
-export const createRequestForFinalReviewOp = (
-  index, comment, proofOfWork
-) => {
+export const createRequestForFinalReviewOp = (index, comment, proofOfWork) => {
   const taskOp = new model.TaskOp();
   const op = new model.RequestForFinalReviewOp();
   op.setIndex(index); // required
@@ -89,9 +89,9 @@ export const createRequestForFinalReviewOp = (
     op.setComment(comment);
   }
   if (proofOfWork) {
-    op.setProofOfWork(proofOfWork);
+    op.setProofofwork(proofOfWork);
   }
-  taskOp.setRequestForFinalReview(op)
+  taskOp.setRequestforfinalreview(op)
   return taskOp;
 }
 
@@ -102,7 +102,7 @@ export const createRecallOp = (index, comment) => {
   if (comment) {
     op.setComment(comment);
   }
-  taskOp.setRecallOp(op)
+  taskOp.setRecall(op)
   return taskOp;
 }
 
@@ -113,7 +113,7 @@ export const createRejectOp = (index, comment) => {
   if (comment) {
     op.setComment(comment);
   }
-  taskOp.RejectOp(op)
+  taskOp.setReject(op)
   return taskOp;
 }
 
@@ -124,7 +124,7 @@ export const createApproveOp = (index, comment) => {
   if (comment) {
     op.setComment(comment);
   }
-  taskOp.ApproveOp(op)
+  taskOp.setApprove(op)
   return taskOp;
 }
 
@@ -135,6 +135,6 @@ export const createQuitOp = (index, comment) => {
   if (comment) {
     op.setComment(comment);
   }
-  taskOp.QuitOp(op)
+  taskOp.setQuit(op)
   return taskOp;
 }
