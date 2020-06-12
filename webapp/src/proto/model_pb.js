@@ -607,7 +607,7 @@ proto.decomx.pantheon.Contact.ContactType = {
   WHATSAPP: 4,
   DISCORD: 5,
   TELEGRAM: 6,
-  OTHTER: 7
+  OTHER: 7
 };
 
 /**
