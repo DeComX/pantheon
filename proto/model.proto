@@ -28,7 +28,7 @@ message Contact {
 }
 
 message User {
-    bytes ethereumAddress = 1;
+    string ethereumAddress = 1;
     string name = 2;
     LinkedData details = 3;
     repeated Contact contact = 4;
@@ -52,6 +52,7 @@ message Task {
     uint64 finishDeadline = 8;
     uint64 reviewDeadline = 9;
     TaskStatus status = 10;
+    string taskEthereumAddress = 11;
 }
 
 /***********************/
