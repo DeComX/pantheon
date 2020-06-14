@@ -21,7 +21,7 @@ message Contact {
         WHATSAPP = 4;
         DISCORD = 5;
         TELEGRAM = 6;
-        OTHTER = 7;
+        OTHER = 7;
     }
     ContactType type = 1;
     string value = 2;
