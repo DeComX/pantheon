@@ -1,6 +1,5 @@
 /* eslint-disable */
 // source: model.proto
-/* eslint-disable */
 /**
  * @fileoverview
  * @enhanceable
@@ -20,10 +19,18 @@ goog.exportSymbol('proto.decomx.pantheon.Contact.ContactType', null, global);
 goog.exportSymbol('proto.decomx.pantheon.LinkedData', null, global);
 goog.exportSymbol('proto.decomx.pantheon.LinkedData.DataType', null, global);
 goog.exportSymbol('proto.decomx.pantheon.OwnerUpdateOp', null, global);
+goog.exportSymbol('proto.decomx.pantheon.OwnerUpdateOp.FinishDeadlineOneofCase', null, global);
+goog.exportSymbol('proto.decomx.pantheon.OwnerUpdateOp.OwnerDepositOneofCase', null, global);
+goog.exportSymbol('proto.decomx.pantheon.OwnerUpdateOp.ReviewDeadlineOneofCase', null, global);
+goog.exportSymbol('proto.decomx.pantheon.OwnerUpdateOp.WorkerDepositOneofCase', null, global);
 goog.exportSymbol('proto.decomx.pantheon.QuitOp', null, global);
 goog.exportSymbol('proto.decomx.pantheon.RecallOp', null, global);
 goog.exportSymbol('proto.decomx.pantheon.RejectOp', null, global);
 goog.exportSymbol('proto.decomx.pantheon.RequestChangeOp', null, global);
+goog.exportSymbol('proto.decomx.pantheon.RequestChangeOp.FinishDeadlineOneofCase', null, global);
+goog.exportSymbol('proto.decomx.pantheon.RequestChangeOp.OwnerDepositOneofCase', null, global);
+goog.exportSymbol('proto.decomx.pantheon.RequestChangeOp.ReviewDeadlineOneofCase', null, global);
+goog.exportSymbol('proto.decomx.pantheon.RequestChangeOp.WorkerDepositOneofCase', null, global);
 goog.exportSymbol('proto.decomx.pantheon.RequestForFinalReviewOp', null, global);
 goog.exportSymbol('proto.decomx.pantheon.Task', null, global);
 goog.exportSymbol('proto.decomx.pantheon.Task.TaskStatus', null, global);
@@ -147,7 +154,7 @@ if (goog.DEBUG && !COMPILED) {
  * @constructor
  */
 proto.decomx.pantheon.OwnerUpdateOp = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, null, proto.decomx.pantheon.OwnerUpdateOp.oneofGroups_);
 };
 goog.inherits(proto.decomx.pantheon.OwnerUpdateOp, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -189,7 +196,7 @@ if (goog.DEBUG && !COMPILED) {
  * @constructor
  */
 proto.decomx.pantheon.RequestChangeOp = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, null, proto.decomx.pantheon.RequestChangeOp.oneofGroups_);
 };
 goog.inherits(proto.decomx.pantheon.RequestChangeOp, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -686,7 +693,7 @@ proto.decomx.pantheon.User.prototype.toObject = function(opt_includeInstance) {
  */
 proto.decomx.pantheon.User.toObject = function(includeInstance, msg) {
   var f, obj = {
-    ethereumaddress: msg.getEthereumaddress_asB64(),
+    ethereumaddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
     name: jspb.Message.getFieldWithDefault(msg, 2, ""),
     details: (f = msg.getDetails()) && proto.decomx.pantheon.LinkedData.toObject(includeInstance, f),
     contactList: jspb.Message.toObjectList(msg.getContactList(),
@@ -728,7 +735,7 @@ proto.decomx.pantheon.User.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {!Uint8Array} */ (reader.readBytes());
+      var value = /** @type {string} */ (reader.readString());
       msg.setEthereumaddress(value);
       break;
     case 2:
@@ -774,9 +781,9 @@ proto.decomx.pantheon.User.prototype.serializeBinary = function() {
  */
 proto.decomx.pantheon.User.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getEthereumaddress_asU8();
+  f = message.getEthereumaddress();
   if (f.length > 0) {
-    writer.writeBytes(
+    writer.writeString(
       1,
       f
     );
@@ -808,44 +815,20 @@ proto.decomx.pantheon.User.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional bytes ethereumAddress = 1;
- * @return {!(string|Uint8Array)}
- */
-proto.decomx.pantheon.User.prototype.getEthereumaddress = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
-};
-
-
-/**
- * optional bytes ethereumAddress = 1;
- * This is a type-conversion wrapper around `getEthereumaddress()`
+ * optional string ethereumAddress = 1;
  * @return {string}
  */
-proto.decomx.pantheon.User.prototype.getEthereumaddress_asB64 = function() {
-  return /** @type {string} */ (jspb.Message.bytesAsB64(
-      this.getEthereumaddress()));
+proto.decomx.pantheon.User.prototype.getEthereumaddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * optional bytes ethereumAddress = 1;
- * Note that Uint8Array is not supported on all browsers.
- * @see http://caniuse.com/Uint8Array
- * This is a type-conversion wrapper around `getEthereumaddress()`
- * @return {!Uint8Array}
- */
-proto.decomx.pantheon.User.prototype.getEthereumaddress_asU8 = function() {
-  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
-      this.getEthereumaddress()));
-};
-
-
-/**
- * @param {!(string|Uint8Array)} value
+ * @param {string} value
  * @return {!proto.decomx.pantheon.User} returns this
  */
 proto.decomx.pantheon.User.prototype.setEthereumaddress = function(value) {
-  return jspb.Message.setProto3BytesField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
@@ -991,7 +974,8 @@ proto.decomx.pantheon.Task.toObject = function(includeInstance, msg) {
     workerdeposit: jspb.Message.getFieldWithDefault(msg, 7, 0),
     finishdeadline: jspb.Message.getFieldWithDefault(msg, 8, 0),
     reviewdeadline: jspb.Message.getFieldWithDefault(msg, 9, 0),
-    status: jspb.Message.getFieldWithDefault(msg, 10, 0)
+    status: jspb.Message.getFieldWithDefault(msg, 10, 0),
+    taskethereumaddress: jspb.Message.getFieldWithDefault(msg, 11, "")
   };
 
   if (includeInstance) {
@@ -1072,6 +1056,10 @@ proto.decomx.pantheon.Task.deserializeBinaryFromReader = function(msg, reader) {
     case 10:
       var value = /** @type {!proto.decomx.pantheon.Task.TaskStatus} */ (reader.readEnum());
       msg.setStatus(value);
+      break;
+    case 11:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTaskethereumaddress(value);
       break;
     default:
       reader.skipField();
@@ -1174,6 +1162,13 @@ proto.decomx.pantheon.Task.serializeBinaryToWriter = function(message, writer) {
   if (f !== 0.0) {
     writer.writeEnum(
       10,
+      f
+    );
+  }
+  f = message.getTaskethereumaddress();
+  if (f.length > 0) {
+    writer.writeString(
+      11,
       f
     );
   }
@@ -1464,6 +1459,24 @@ proto.decomx.pantheon.Task.prototype.getStatus = function() {
  */
 proto.decomx.pantheon.Task.prototype.setStatus = function(value) {
   return jspb.Message.setProto3EnumField(this, 10, value);
+};
+
+
+/**
+ * optional string taskEthereumAddress = 11;
+ * @return {string}
+ */
+proto.decomx.pantheon.Task.prototype.getTaskethereumaddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 11, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.decomx.pantheon.Task} returns this
+ */
+proto.decomx.pantheon.Task.prototype.setTaskethereumaddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 11, value);
 };
 
 
@@ -2008,6 +2021,76 @@ proto.decomx.pantheon.TaskOp.prototype.hasQuit = function() {
 
 
 
+/**
+ * Oneof group definitions for this message. Each group defines the field
+ * numbers belonging to that group. When of these fields' value is set, all
+ * other fields in the group are cleared. During deserialization, if multiple
+ * fields are encountered for a group, only the last value seen will be kept.
+ * @private {!Array<!Array<number>>}
+ * @const
+ */
+proto.decomx.pantheon.OwnerUpdateOp.oneofGroups_ = [[4],[5],[6],[7]];
+
+/**
+ * @enum {number}
+ */
+proto.decomx.pantheon.OwnerUpdateOp.OwnerDepositOneofCase = {
+  OWNER_DEPOSIT_ONEOF_NOT_SET: 0,
+  OWNERDEPOSIT: 4
+};
+
+/**
+ * @return {proto.decomx.pantheon.OwnerUpdateOp.OwnerDepositOneofCase}
+ */
+proto.decomx.pantheon.OwnerUpdateOp.prototype.getOwnerDepositOneofCase = function() {
+  return /** @type {proto.decomx.pantheon.OwnerUpdateOp.OwnerDepositOneofCase} */(jspb.Message.computeOneofCase(this, proto.decomx.pantheon.OwnerUpdateOp.oneofGroups_[0]));
+};
+
+/**
+ * @enum {number}
+ */
+proto.decomx.pantheon.OwnerUpdateOp.WorkerDepositOneofCase = {
+  WORKER_DEPOSIT_ONEOF_NOT_SET: 0,
+  WORKERDEPOSIT: 5
+};
+
+/**
+ * @return {proto.decomx.pantheon.OwnerUpdateOp.WorkerDepositOneofCase}
+ */
+proto.decomx.pantheon.OwnerUpdateOp.prototype.getWorkerDepositOneofCase = function() {
+  return /** @type {proto.decomx.pantheon.OwnerUpdateOp.WorkerDepositOneofCase} */(jspb.Message.computeOneofCase(this, proto.decomx.pantheon.OwnerUpdateOp.oneofGroups_[1]));
+};
+
+/**
+ * @enum {number}
+ */
+proto.decomx.pantheon.OwnerUpdateOp.FinishDeadlineOneofCase = {
+  FINISH_DEADLINE_ONEOF_NOT_SET: 0,
+  FINISHDEADLINE: 6
+};
+
+/**
+ * @return {proto.decomx.pantheon.OwnerUpdateOp.FinishDeadlineOneofCase}
+ */
+proto.decomx.pantheon.OwnerUpdateOp.prototype.getFinishDeadlineOneofCase = function() {
+  return /** @type {proto.decomx.pantheon.OwnerUpdateOp.FinishDeadlineOneofCase} */(jspb.Message.computeOneofCase(this, proto.decomx.pantheon.OwnerUpdateOp.oneofGroups_[2]));
+};
+
+/**
+ * @enum {number}
+ */
+proto.decomx.pantheon.OwnerUpdateOp.ReviewDeadlineOneofCase = {
+  REVIEW_DEADLINE_ONEOF_NOT_SET: 0,
+  REVIEWDEADLINE: 7
+};
+
+/**
+ * @return {proto.decomx.pantheon.OwnerUpdateOp.ReviewDeadlineOneofCase}
+ */
+proto.decomx.pantheon.OwnerUpdateOp.prototype.getReviewDeadlineOneofCase = function() {
+  return /** @type {proto.decomx.pantheon.OwnerUpdateOp.ReviewDeadlineOneofCase} */(jspb.Message.computeOneofCase(this, proto.decomx.pantheon.OwnerUpdateOp.oneofGroups_[3]));
+};
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -2164,29 +2247,29 @@ proto.decomx.pantheon.OwnerUpdateOp.serializeBinaryToWriter = function(message, 
       proto.decomx.pantheon.LinkedData.serializeBinaryToWriter
     );
   }
-  f = message.getOwnerdeposit();
-  if (f !== 0) {
+  f = /** @type {number} */ (jspb.Message.getField(message, 4));
+  if (f != null) {
     writer.writeUint64(
       4,
       f
     );
   }
-  f = message.getWorkerdeposit();
-  if (f !== 0) {
+  f = /** @type {number} */ (jspb.Message.getField(message, 5));
+  if (f != null) {
     writer.writeUint64(
       5,
       f
     );
   }
-  f = message.getFinishdeadline();
-  if (f !== 0) {
+  f = /** @type {number} */ (jspb.Message.getField(message, 6));
+  if (f != null) {
     writer.writeUint64(
       6,
       f
     );
   }
-  f = message.getReviewdeadline();
-  if (f !== 0) {
+  f = /** @type {number} */ (jspb.Message.getField(message, 7));
+  if (f != null) {
     writer.writeUint64(
       7,
       f
@@ -2301,7 +2384,25 @@ proto.decomx.pantheon.OwnerUpdateOp.prototype.getOwnerdeposit = function() {
  * @return {!proto.decomx.pantheon.OwnerUpdateOp} returns this
  */
 proto.decomx.pantheon.OwnerUpdateOp.prototype.setOwnerdeposit = function(value) {
-  return jspb.Message.setProto3IntField(this, 4, value);
+  return jspb.Message.setOneofField(this, 4, proto.decomx.pantheon.OwnerUpdateOp.oneofGroups_[0], value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.decomx.pantheon.OwnerUpdateOp} returns this
+ */
+proto.decomx.pantheon.OwnerUpdateOp.prototype.clearOwnerdeposit = function() {
+  return jspb.Message.setOneofField(this, 4, proto.decomx.pantheon.OwnerUpdateOp.oneofGroups_[0], undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.decomx.pantheon.OwnerUpdateOp.prototype.hasOwnerdeposit = function() {
+  return jspb.Message.getField(this, 4) != null;
 };
 
 
@@ -2319,7 +2420,25 @@ proto.decomx.pantheon.OwnerUpdateOp.prototype.getWorkerdeposit = function() {
  * @return {!proto.decomx.pantheon.OwnerUpdateOp} returns this
  */
 proto.decomx.pantheon.OwnerUpdateOp.prototype.setWorkerdeposit = function(value) {
-  return jspb.Message.setProto3IntField(this, 5, value);
+  return jspb.Message.setOneofField(this, 5, proto.decomx.pantheon.OwnerUpdateOp.oneofGroups_[1], value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.decomx.pantheon.OwnerUpdateOp} returns this
+ */
+proto.decomx.pantheon.OwnerUpdateOp.prototype.clearWorkerdeposit = function() {
+  return jspb.Message.setOneofField(this, 5, proto.decomx.pantheon.OwnerUpdateOp.oneofGroups_[1], undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.decomx.pantheon.OwnerUpdateOp.prototype.hasWorkerdeposit = function() {
+  return jspb.Message.getField(this, 5) != null;
 };
 
 
@@ -2337,7 +2456,25 @@ proto.decomx.pantheon.OwnerUpdateOp.prototype.getFinishdeadline = function() {
  * @return {!proto.decomx.pantheon.OwnerUpdateOp} returns this
  */
 proto.decomx.pantheon.OwnerUpdateOp.prototype.setFinishdeadline = function(value) {
-  return jspb.Message.setProto3IntField(this, 6, value);
+  return jspb.Message.setOneofField(this, 6, proto.decomx.pantheon.OwnerUpdateOp.oneofGroups_[2], value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.decomx.pantheon.OwnerUpdateOp} returns this
+ */
+proto.decomx.pantheon.OwnerUpdateOp.prototype.clearFinishdeadline = function() {
+  return jspb.Message.setOneofField(this, 6, proto.decomx.pantheon.OwnerUpdateOp.oneofGroups_[2], undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.decomx.pantheon.OwnerUpdateOp.prototype.hasFinishdeadline = function() {
+  return jspb.Message.getField(this, 6) != null;
 };
 
 
@@ -2355,7 +2492,25 @@ proto.decomx.pantheon.OwnerUpdateOp.prototype.getReviewdeadline = function() {
  * @return {!proto.decomx.pantheon.OwnerUpdateOp} returns this
  */
 proto.decomx.pantheon.OwnerUpdateOp.prototype.setReviewdeadline = function(value) {
-  return jspb.Message.setProto3IntField(this, 7, value);
+  return jspb.Message.setOneofField(this, 7, proto.decomx.pantheon.OwnerUpdateOp.oneofGroups_[3], value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.decomx.pantheon.OwnerUpdateOp} returns this
+ */
+proto.decomx.pantheon.OwnerUpdateOp.prototype.clearReviewdeadline = function() {
+  return jspb.Message.setOneofField(this, 7, proto.decomx.pantheon.OwnerUpdateOp.oneofGroups_[3], undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.decomx.pantheon.OwnerUpdateOp.prototype.hasReviewdeadline = function() {
+  return jspb.Message.getField(this, 7) != null;
 };
 
 
@@ -2541,6 +2696,76 @@ proto.decomx.pantheon.WorkerAcceptOp.prototype.hasComment = function() {
 
 
 
+/**
+ * Oneof group definitions for this message. Each group defines the field
+ * numbers belonging to that group. When of these fields' value is set, all
+ * other fields in the group are cleared. During deserialization, if multiple
+ * fields are encountered for a group, only the last value seen will be kept.
+ * @private {!Array<!Array<number>>}
+ * @const
+ */
+proto.decomx.pantheon.RequestChangeOp.oneofGroups_ = [[4],[5],[6],[7]];
+
+/**
+ * @enum {number}
+ */
+proto.decomx.pantheon.RequestChangeOp.OwnerDepositOneofCase = {
+  OWNER_DEPOSIT_ONEOF_NOT_SET: 0,
+  OWNERDEPOSIT: 4
+};
+
+/**
+ * @return {proto.decomx.pantheon.RequestChangeOp.OwnerDepositOneofCase}
+ */
+proto.decomx.pantheon.RequestChangeOp.prototype.getOwnerDepositOneofCase = function() {
+  return /** @type {proto.decomx.pantheon.RequestChangeOp.OwnerDepositOneofCase} */(jspb.Message.computeOneofCase(this, proto.decomx.pantheon.RequestChangeOp.oneofGroups_[0]));
+};
+
+/**
+ * @enum {number}
+ */
+proto.decomx.pantheon.RequestChangeOp.WorkerDepositOneofCase = {
+  WORKER_DEPOSIT_ONEOF_NOT_SET: 0,
+  WORKERDEPOSIT: 5
+};
+
+/**
+ * @return {proto.decomx.pantheon.RequestChangeOp.WorkerDepositOneofCase}
+ */
+proto.decomx.pantheon.RequestChangeOp.prototype.getWorkerDepositOneofCase = function() {
+  return /** @type {proto.decomx.pantheon.RequestChangeOp.WorkerDepositOneofCase} */(jspb.Message.computeOneofCase(this, proto.decomx.pantheon.RequestChangeOp.oneofGroups_[1]));
+};
+
+/**
+ * @enum {number}
+ */
+proto.decomx.pantheon.RequestChangeOp.FinishDeadlineOneofCase = {
+  FINISH_DEADLINE_ONEOF_NOT_SET: 0,
+  FINISHDEADLINE: 6
+};
+
+/**
+ * @return {proto.decomx.pantheon.RequestChangeOp.FinishDeadlineOneofCase}
+ */
+proto.decomx.pantheon.RequestChangeOp.prototype.getFinishDeadlineOneofCase = function() {
+  return /** @type {proto.decomx.pantheon.RequestChangeOp.FinishDeadlineOneofCase} */(jspb.Message.computeOneofCase(this, proto.decomx.pantheon.RequestChangeOp.oneofGroups_[2]));
+};
+
+/**
+ * @enum {number}
+ */
+proto.decomx.pantheon.RequestChangeOp.ReviewDeadlineOneofCase = {
+  REVIEW_DEADLINE_ONEOF_NOT_SET: 0,
+  REVIEWDEADLINE: 7
+};
+
+/**
+ * @return {proto.decomx.pantheon.RequestChangeOp.ReviewDeadlineOneofCase}
+ */
+proto.decomx.pantheon.RequestChangeOp.prototype.getReviewDeadlineOneofCase = function() {
+  return /** @type {proto.decomx.pantheon.RequestChangeOp.ReviewDeadlineOneofCase} */(jspb.Message.computeOneofCase(this, proto.decomx.pantheon.RequestChangeOp.oneofGroups_[3]));
+};
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -2697,29 +2922,29 @@ proto.decomx.pantheon.RequestChangeOp.serializeBinaryToWriter = function(message
       proto.decomx.pantheon.LinkedData.serializeBinaryToWriter
     );
   }
-  f = message.getOwnerdeposit();
-  if (f !== 0) {
+  f = /** @type {number} */ (jspb.Message.getField(message, 4));
+  if (f != null) {
     writer.writeUint64(
       4,
       f
     );
   }
-  f = message.getWorkerdeposit();
-  if (f !== 0) {
+  f = /** @type {number} */ (jspb.Message.getField(message, 5));
+  if (f != null) {
     writer.writeUint64(
       5,
       f
     );
   }
-  f = message.getFinishdeadline();
-  if (f !== 0) {
+  f = /** @type {number} */ (jspb.Message.getField(message, 6));
+  if (f != null) {
     writer.writeUint64(
       6,
       f
     );
   }
-  f = message.getReviewdeadline();
-  if (f !== 0) {
+  f = /** @type {number} */ (jspb.Message.getField(message, 7));
+  if (f != null) {
     writer.writeUint64(
       7,
       f
@@ -2834,7 +3059,25 @@ proto.decomx.pantheon.RequestChangeOp.prototype.getOwnerdeposit = function() {
  * @return {!proto.decomx.pantheon.RequestChangeOp} returns this
  */
 proto.decomx.pantheon.RequestChangeOp.prototype.setOwnerdeposit = function(value) {
-  return jspb.Message.setProto3IntField(this, 4, value);
+  return jspb.Message.setOneofField(this, 4, proto.decomx.pantheon.RequestChangeOp.oneofGroups_[0], value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.decomx.pantheon.RequestChangeOp} returns this
+ */
+proto.decomx.pantheon.RequestChangeOp.prototype.clearOwnerdeposit = function() {
+  return jspb.Message.setOneofField(this, 4, proto.decomx.pantheon.RequestChangeOp.oneofGroups_[0], undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.decomx.pantheon.RequestChangeOp.prototype.hasOwnerdeposit = function() {
+  return jspb.Message.getField(this, 4) != null;
 };
 
 
@@ -2852,7 +3095,25 @@ proto.decomx.pantheon.RequestChangeOp.prototype.getWorkerdeposit = function() {
  * @return {!proto.decomx.pantheon.RequestChangeOp} returns this
  */
 proto.decomx.pantheon.RequestChangeOp.prototype.setWorkerdeposit = function(value) {
-  return jspb.Message.setProto3IntField(this, 5, value);
+  return jspb.Message.setOneofField(this, 5, proto.decomx.pantheon.RequestChangeOp.oneofGroups_[1], value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.decomx.pantheon.RequestChangeOp} returns this
+ */
+proto.decomx.pantheon.RequestChangeOp.prototype.clearWorkerdeposit = function() {
+  return jspb.Message.setOneofField(this, 5, proto.decomx.pantheon.RequestChangeOp.oneofGroups_[1], undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.decomx.pantheon.RequestChangeOp.prototype.hasWorkerdeposit = function() {
+  return jspb.Message.getField(this, 5) != null;
 };
 
 
@@ -2870,7 +3131,25 @@ proto.decomx.pantheon.RequestChangeOp.prototype.getFinishdeadline = function() {
  * @return {!proto.decomx.pantheon.RequestChangeOp} returns this
  */
 proto.decomx.pantheon.RequestChangeOp.prototype.setFinishdeadline = function(value) {
-  return jspb.Message.setProto3IntField(this, 6, value);
+  return jspb.Message.setOneofField(this, 6, proto.decomx.pantheon.RequestChangeOp.oneofGroups_[2], value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.decomx.pantheon.RequestChangeOp} returns this
+ */
+proto.decomx.pantheon.RequestChangeOp.prototype.clearFinishdeadline = function() {
+  return jspb.Message.setOneofField(this, 6, proto.decomx.pantheon.RequestChangeOp.oneofGroups_[2], undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.decomx.pantheon.RequestChangeOp.prototype.hasFinishdeadline = function() {
+  return jspb.Message.getField(this, 6) != null;
 };
 
 
@@ -2888,7 +3167,25 @@ proto.decomx.pantheon.RequestChangeOp.prototype.getReviewdeadline = function() {
  * @return {!proto.decomx.pantheon.RequestChangeOp} returns this
  */
 proto.decomx.pantheon.RequestChangeOp.prototype.setReviewdeadline = function(value) {
-  return jspb.Message.setProto3IntField(this, 7, value);
+  return jspb.Message.setOneofField(this, 7, proto.decomx.pantheon.RequestChangeOp.oneofGroups_[3], value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.decomx.pantheon.RequestChangeOp} returns this
+ */
+proto.decomx.pantheon.RequestChangeOp.prototype.clearReviewdeadline = function() {
+  return jspb.Message.setOneofField(this, 7, proto.decomx.pantheon.RequestChangeOp.oneofGroups_[3], undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.decomx.pantheon.RequestChangeOp.prototype.hasReviewdeadline = function() {
+  return jspb.Message.getField(this, 7) != null;
 };
 
 

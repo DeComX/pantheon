@@ -4,7 +4,7 @@ export const createTask = (owner, worker, taskObj) => {
   const task = new model.Task();
   task.setOwner(owner);
   task.setWorker(worker);
-  task.setTaskdetails(taskObj['details']);
+  task.setTaskdetails(taskObj['task_details']);
   task.setOwnerdeposit(taskObj['owner_deposit']);
   task.setWorkerdeposit(taskObj['worker_deposit']);
   task.setFinishdeadline(taskObj['finish_deadline']);
@@ -17,11 +17,11 @@ export const createOwnerUpdateOp = (index, comment, update) => {
   const taskOp = new model.TaskOp();
   const op = new model.OwnerUpdateOp();
   op.setIndex(index); // required
-  if (comment) {
+  if (comment !== undefined) {
     op.setComment(comment);
   }
-  if (update['details'] !== undefined) {
-    op.setTaskdetails(update['details']);
+  if (update['task_details'] !== undefined) {
+    op.setTaskdetails(update['task_details']);
   }
   if (update['owner_deposit'] !== undefined) {
     op.setOwnerdeposit(update['owner_deposit']);
@@ -45,7 +45,7 @@ export const createWorkerAcceptOp = (
   const taskOp = new model.TaskOp();
   const op = new model.WorkerAcceptOp();
   op.setIndex(index); // required
-  if (comment) {
+  if (comment !== undefined) {
     op.setComment(comment);
   }
   taskOp.setWorkeraccept(op)
@@ -57,17 +57,15 @@ export const createRequestChangeOp = (index, comment, update) => {
   const taskOp = new model.TaskOp();
   const op = new model.RequestChangeOp();
   op.setIndex(index); // required
-  if (comment) {
+  if (comment !== undefined) {
     op.setComment(comment);
   }
-  if (update['details']) {
-    op.setTaskdetails(update['details']);
+  if (update['task_details'] !== undefined) {
+    op.setTaskdetails(update['task_details']);
   }
-  // owner deposit could be 0
   if (update['owner_deposit'] !== undefined) {
     op.setOwnerdeposit(update['owner_deposit']);
   }
-  // worker deposit could be 0
   if (update['worker_deposit'] !== undefined) {
     op.setWorkerdeposit(update['worker_deposit']);
   }
@@ -85,10 +83,10 @@ export const createRequestForFinalReviewOp = (index, comment, proofOfWork) => {
   const taskOp = new model.TaskOp();
   const op = new model.RequestForFinalReviewOp();
   op.setIndex(index); // required
-  if (comment) {
+  if (comment !== undefined) {
     op.setComment(comment);
   }
-  if (proofOfWork) {
+  if (proofOfWork !== undefined) {
     op.setProofofwork(proofOfWork);
   }
   taskOp.setRequestforfinalreview(op)
@@ -99,7 +97,7 @@ export const createRecallOp = (index, comment) => {
   const taskOp = new model.TaskOp();
   const op = new model.RecallOp();
   op.setIndex(index); // required
-  if (comment) {
+  if (comment !== undefined) {
     op.setComment(comment);
   }
   taskOp.setRecall(op)
@@ -110,7 +108,7 @@ export const createRejectOp = (index, comment) => {
   const taskOp = new model.TaskOp();
   const op = new model.RejectOp();
   op.setIndex(index); // required
-  if (comment) {
+  if (comment !== undefined) {
     op.setComment(comment);
   }
   taskOp.setReject(op)
@@ -121,7 +119,7 @@ export const createApproveOp = (index, comment) => {
   const taskOp = new model.TaskOp();
   const op = new model.ApproveOp();
   op.setIndex(index); // required
-  if (comment) {
+  if (comment !== undefined) {
     op.setComment(comment);
   }
   taskOp.setApprove(op)
@@ -132,7 +130,7 @@ export const createQuitOp = (index, comment) => {
   const taskOp = new model.TaskOp();
   const op = new model.QuitOp();
   op.setIndex(index); // required
-  if (comment) {
+  if (comment !== undefined) {
     op.setComment(comment);
   }
   taskOp.setQuit(op)
