@@ -1,3 +1,5 @@
+import { validateTask, validateTaskOp } from './validator';
+
 const model = require('../proto/model_pb.js');
 
 export const createTask = (owner, worker, taskObj) => {
@@ -9,6 +11,7 @@ export const createTask = (owner, worker, taskObj) => {
   task.setWorkerdeposit(taskObj['worker_deposit']);
   task.setFinishdeadline(taskObj['finish_deadline']);
   task.setReviewdeadline(taskObj['review_deadline']);
+  validateTask(task);
   return task;
 }
 
@@ -36,6 +39,7 @@ export const createOwnerUpdateOp = (index, comment, update) => {
     op.setReviewdeadline(update['review_deadline']);
   }
   taskOp.setOwnerupdate(op);
+  validateTaskOp(taskOp);
   return taskOp;
 }
 
@@ -48,7 +52,8 @@ export const createWorkerAcceptOp = (
   if (comment !== undefined) {
     op.setComment(comment);
   }
-  taskOp.setWorkeraccept(op)
+  taskOp.setWorkeraccept(op);
+  validateTaskOp(taskOp);
   return taskOp;
 }
 
@@ -76,6 +81,7 @@ export const createRequestChangeOp = (index, comment, update) => {
     op.setReviewdeadline(update['review_deadline']);
   }
   taskOp.setRequestchange(op)
+  validateTaskOp(taskOp);
   return taskOp;
 }
 
@@ -90,6 +96,7 @@ export const createRequestForFinalReviewOp = (index, comment, proofOfWork) => {
     op.setProofofwork(proofOfWork);
   }
   taskOp.setRequestforfinalreview(op)
+  validateTaskOp(taskOp);
   return taskOp;
 }
 
@@ -101,6 +108,7 @@ export const createRecallOp = (index, comment) => {
     op.setComment(comment);
   }
   taskOp.setRecall(op)
+  validateTaskOp(taskOp);
   return taskOp;
 }
 
@@ -112,6 +120,7 @@ export const createRejectOp = (index, comment) => {
     op.setComment(comment);
   }
   taskOp.setReject(op)
+  validateTaskOp(taskOp);
   return taskOp;
 }
 
@@ -123,6 +132,7 @@ export const createApproveOp = (index, comment) => {
     op.setComment(comment);
   }
   taskOp.setApprove(op)
+  validateTaskOp(taskOp);
   return taskOp;
 }
 
@@ -134,5 +144,6 @@ export const createQuitOp = (index, comment) => {
     op.setComment(comment);
   }
   taskOp.setQuit(op)
+  validateTaskOp(taskOp);
   return taskOp;
 }
