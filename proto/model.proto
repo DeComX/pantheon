@@ -36,21 +36,23 @@ message User {
 
 message Task {
     enum TaskStatus {
-        PENDING_ACCEPT = 0;
-        PENDING_WORKER_PROOF = 1;
-        PENDING_CHANGE_REVIEW = 2;
-        PENDING_FINAL_REVIEW = 3;
-        CLOSED = 4; // task finished or cancelled
+        UNKNOWN = 0;
+        PENDING_OWNER_DEPOSIT = 1;
+        PENDING_ACCEPT = 2;
+        PENDING_WORKER_PROOF = 3;
+        PENDING_CHANGE_REVIEW = 4;
+        PENDING_FINAL_REVIEW = 5;
+        CLOSED = 6; // task finished or cancelled
     }
     User owner = 1;
     User worker = 2;
     repeated TaskOp op = 3;
     LinkedData taskDetails = 4;
     LinkedData proofOfWork = 5;
-    uint64 ownerDeposit = 6;
-    uint64 workerDeposit = 7;
+    double ownerDeposit = 6;
+    double workerDeposit = 7;
     uint64 finishDeadline = 8;
-    uint64 reviewDeadline = 9;
+    uint64 reviewDuration = 9;
     TaskStatus status = 10;
     string taskEthereumAddress = 11;
 }
