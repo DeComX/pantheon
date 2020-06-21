@@ -15,15 +15,6 @@ const TaskList = () => {
 
   console.log(web3React);
 
-  const task = new model.Task();
-  task.taskDetails = new model.LinkedData();
-  task.taskDetails.value = "Fake link1";
-  task.worker = new model.User();
-  task.worker.ethereumAddress = "0x2bD9aAa2953F988153c8629926D22A6a5F69b14E";
-  task.workerDeposit = 1;
-  createTask(task).then((contractAddr) => console.log('https://ropsten.etherscan.io/address/' + contractAddr));
-
-
   return (
     <div></div>
   );
