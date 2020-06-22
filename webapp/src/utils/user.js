@@ -42,7 +42,7 @@ export const createContact = (type, value) => {
   const contact = new model.Contact();
   contact.setType(type);
   contact.setValue(value);
-  validateContact(user);
+  validateContact(contact);
   return contact;
 }
 
