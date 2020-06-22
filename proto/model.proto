@@ -36,23 +36,21 @@ message User {
 
 message Task {
   enum TaskStatus {
-    PENDING_ACCEPT = 0;
-    PENDING_WORKER_PROOF = 1;
-    PENDING_CHANGE_REVIEW = 2;
-    PENDING_FINAL_REVIEW = 3;
-    CLOSED = 4; // task finished or cancelled
+    DRAFT = 0;
+    IN_PROGRESS = 1;
+    PENDING_WORKER = 2;
+    PENDING_OWNER = 3;
+    CLOSED = 4;
   }
   User owner = 1;
   User worker = 2;
-  repeated TaskOp op = 3;
+  TaskStatus status = 3;
   LinkedData taskDetails = 4;
-  LinkedData proofOfWork = 5;
-  uint64 ownerDeposit = 6;
-  uint64 workerDeposit = 7;
-  uint64 finishDeadline = 8;
-  uint64 reviewDeadline = 9;
-  TaskStatus status = 10;
-  string taskEthereumAddress = 11;
+  uint64 ownerDepositWei = 5;
+  uint64 workerDepositWei = 6;
+  uint64 deadlineHours = 7;
+  repeated TaskOp op = 8;
+  string taskEthereumAddress = 9;
 }
 
 /***********************/
@@ -72,21 +70,20 @@ message TaskOp {
   }
 }
 
+// This op doesn't need approval from worker since it
+// happens before worker accepting the task.
 message OwnerUpdateOp {
   uint32 index = 1;
   LinkedData comment = 2;
   LinkedData taskDetails = 3;
   oneof owner_deposit_oneof {
-    uint64 ownerDeposit = 4;
+    uint64 ownerDepositWei = 4;
   }
   oneof worker_deposit_oneof {
-    uint64 workerDeposit = 5;
+    uint64 workerDepositWei = 5;
   }
-  oneof finish_deadline_oneof {
-    uint64 finishDeadline = 6;
-  }
-  oneof review_deadline_oneof {
-    uint64 reviewDeadline = 7;
+  oneof deadline_oneof {
+    uint64 deadlineHours = 6;
   }
 }
 
@@ -100,16 +97,13 @@ message RequestChangeOp {
   LinkedData comment = 2;
   LinkedData taskDetails = 3;
   oneof owner_deposit_oneof {
-    uint64 ownerDeposit = 4;
+    uint64 ownerDepositWei = 4;
   }
   oneof worker_deposit_oneof {
-    uint64 workerDeposit = 5;
+    uint64 workerDepositWei = 5;
   }
-  oneof finish_deadline_oneof {
-    uint64 finishDeadline = 6;
-  }
-  oneof review_deadline_oneof {
-    uint64 reviewDeadline = 7;
+  oneof deadline_oneof {
+    uint64 deadlineHours = 6;
   }
 }
 
