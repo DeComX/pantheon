@@ -3,10 +3,10 @@
 ## Compile the proto file to js file
 ```
 brew install protobuf
-protoc --proto_path=./ --js_out=import_style=commonjs,binary:./ *.proto
+protoc --proto_path=./ --js_out=import_style=commonjs,binary:../webapp/src/proto/ *.proto
 ```
 
-## Copy the js file to webapp/src/proto/
+## Add the following line to the beginning of generated file to skip lint errors
 ```
-cp model_pb.js ../webapp/src/proto
+/* eslint-disable */
 ```
