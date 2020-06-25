@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { createUser, createContact } from './user';
 import { createLinkedData, createUint64Override } from './common';
 import { ethers } from 'ethers';
@@ -21,7 +20,7 @@ const COMMENT = createLinkedData(model.LinkedData.DataType.PLAIN_TEXT, "comment"
 const USER1 = createUser({
   ethereumAddress: "0xd115bffabbdd893a6f7cea402e7338643ced44a6",
   name: "User1",
-  task_details: createLinkedData(model.LinkedData.DataType.PLAIN_TEXT, "abc"),
+  details: createLinkedData(model.LinkedData.DataType.PLAIN_TEXT, "abc"),
   contacts: [createContact(model.Contact.ContactType.OTHER, "other")]
 });
 const USER2 = createUser({

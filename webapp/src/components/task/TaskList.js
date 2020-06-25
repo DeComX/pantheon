@@ -6,12 +6,11 @@ import IpfsContext from '../../ipfs/IpfsContext.js';
 import createTask from '../../ethers/ethers_util.js';
 
 const TaskList = () => {
-  const {ipfs, ipfsId} = React.useContext(IpfsContext);
+  const {ipfs} = React.useContext(IpfsContext);
   const web3React = useWeb3React();
 
   // A fake task for testing.
   console.log(ipfs);
-  console.log(ipfsId);
 
   console.log(web3React);
 
