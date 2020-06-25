@@ -1,3 +1,5 @@
+import { validateUser, validateContact } from './validator';
+
 const model = require('../proto/model_pb.js');
 
 // ethAddress: bytes
@@ -16,6 +18,7 @@ export const createUser = (userObj) => {
   if (userObj['contacts'] !== undefined) {
     user.setContactList(userObj['contacts']);
   }
+  validateUser(user);
   return user;
 }
 
@@ -29,6 +32,7 @@ export const updateUser = (user, update) => {
   if (update['contacts'] !== undefined) {
     user.setContactList(update['contacts']);
   }
+  validateUser(user);
   return user;
 }
 
@@ -38,6 +42,7 @@ export const createContact = (type, value) => {
   const contact = new model.Contact();
   contact.setType(type);
   contact.setValue(value);
+  validateContact(user);
   return contact;
 }
 

@@ -3,56 +3,56 @@ syntax = "proto3";
 package decomx.pantheon;
 
 message LinkedData {
-    enum DataType {
-        PLAIN_TEXT = 0;
-        IPFS_HASH = 1;
-        WEB_URL = 2;
-    }
-    DataType type = 1;
-    string value = 2;
+  enum DataType {
+    PLAIN_TEXT = 0;
+    IPFS_HASH = 1;
+    WEB_URL = 2;
+  }
+  DataType type = 1;
+  string value = 2;
 }
 
 message Contact {
-    enum ContactType {
-        PHONE = 0;
-        EMAIL = 1;
-        FACEBOOK = 2;
-        WECHAT = 3;
-        WHATSAPP = 4;
-        DISCORD = 5;
-        TELEGRAM = 6;
-        OTHER = 7;
-    }
-    ContactType type = 1;
-    string value = 2;
+  enum ContactType {
+    PHONE = 0;
+    EMAIL = 1;
+    FACEBOOK = 2;
+    WECHAT = 3;
+    WHATSAPP = 4;
+    DISCORD = 5;
+    TELEGRAM = 6;
+    OTHER = 7;
+  }
+  ContactType type = 1;
+  string value = 2;
 }
 
 message User {
-    string ethereumAddress = 1;
-    string name = 2;
-    LinkedData details = 3;
-    repeated Contact contact = 4;
+  string ethereumAddress = 1;
+  string name = 2;
+  LinkedData details = 3;
+  repeated Contact contact = 4;
 }
 
 message Task {
-    enum TaskStatus {
-        PENDING_ACCEPT = 0;
-        PENDING_WORKER_PROOF = 1;
-        PENDING_CHANGE_REVIEW = 2;
-        PENDING_FINAL_REVIEW = 3;
-        CLOSED = 4; // task finished or cancelled
-    }
-    User owner = 1;
-    User worker = 2;
-    repeated TaskOp op = 3;
-    LinkedData taskDetails = 4;
-    LinkedData proofOfWork = 5;
-    uint64 ownerDeposit = 6;
-    uint64 workerDeposit = 7;
-    uint64 finishDeadline = 8;
-    uint64 reviewDeadline = 9;
-    TaskStatus status = 10;
-    string taskEthereumAddress = 11;
+  enum TaskStatus {
+    PENDING_ACCEPT = 0;
+    PENDING_WORKER_PROOF = 1;
+    PENDING_CHANGE_REVIEW = 2;
+    PENDING_FINAL_REVIEW = 3;
+    CLOSED = 4; // task finished or cancelled
+  }
+  User owner = 1;
+  User worker = 2;
+  repeated TaskOp op = 3;
+  LinkedData taskDetails = 4;
+  LinkedData proofOfWork = 5;
+  uint64 ownerDeposit = 6;
+  uint64 workerDeposit = 7;
+  uint64 finishDeadline = 8;
+  uint64 reviewDeadline = 9;
+  TaskStatus status = 10;
+  string taskEthereumAddress = 11;
 }
 
 /***********************/
@@ -60,65 +60,81 @@ message Task {
 /***********************/
 
 message TaskOp {
-    oneof task_op {
-        OwnerUpdateOp ownerUpdate = 1;
-        WorkerAcceptOp workerAccept = 2;
-        RequestChangeOp requestChange = 3;
-        RequestForFinalReviewOp requestForFinalReview = 4;
-        RecallOp recall = 5;
-        RejectOp reject = 6;
-        ApproveOp approve = 7;
-        QuitOp quit = 8;
-    }
+  oneof task_op {
+    OwnerUpdateOp ownerUpdate = 1;
+    WorkerAcceptOp workerAccept = 2;
+    RequestChangeOp requestChange = 3;
+    RequestForFinalReviewOp requestForFinalReview = 4;
+    RecallOp recall = 5;
+    RejectOp reject = 6;
+    ApproveOp approve = 7;
+    QuitOp quit = 8;
+  }
 }
 
 message OwnerUpdateOp {
-    uint32 index = 1;
-    LinkedData comment = 2;
-    LinkedData taskDetails = 3;
+  uint32 index = 1;
+  LinkedData comment = 2;
+  LinkedData taskDetails = 3;
+  oneof owner_deposit_oneof {
     uint64 ownerDeposit = 4;
+  }
+  oneof worker_deposit_oneof {
     uint64 workerDeposit = 5;
+  }
+  oneof finish_deadline_oneof {
     uint64 finishDeadline = 6;
+  }
+  oneof review_deadline_oneof {
     uint64 reviewDeadline = 7;
+  }
 }
 
 message WorkerAcceptOp {
-    uint32 index = 1;
-    LinkedData comment = 2;
+  uint32 index = 1;
+  LinkedData comment = 2;
 }
 
 message RequestChangeOp {
-    uint32 index = 1;
-    LinkedData comment = 2;
-    LinkedData taskDetails = 3;
+  uint32 index = 1;
+  LinkedData comment = 2;
+  LinkedData taskDetails = 3;
+  oneof owner_deposit_oneof {
     uint64 ownerDeposit = 4;
+  }
+  oneof worker_deposit_oneof {
     uint64 workerDeposit = 5;
+  }
+  oneof finish_deadline_oneof {
     uint64 finishDeadline = 6;
+  }
+  oneof review_deadline_oneof {
     uint64 reviewDeadline = 7;
+  }
 }
 
 message RequestForFinalReviewOp {
-    uint32 index = 1;
-    LinkedData comment = 2;
-    LinkedData proofOfWork = 3;
+  uint32 index = 1;
+  LinkedData comment = 2;
+  LinkedData proofOfWork = 3;
 }
 
 message RecallOp {
-    uint32 index = 1;
-    LinkedData comment = 2;
+  uint32 index = 1;
+  LinkedData comment = 2;
 }
 
 message RejectOp {
-    uint32 index = 1;
-    LinkedData comment = 2;
+  uint32 index = 1;
+  LinkedData comment = 2;
 }
 
 message ApproveOp {
-    uint32 index = 1;
-    LinkedData comment = 2;
+  uint32 index = 1;
+  LinkedData comment = 2;
 }
 
 message QuitOp {
-    uint32 index = 1;
-    LinkedData comment = 2;
+  uint32 index = 1;
+  LinkedData comment = 2;
 }
