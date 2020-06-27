@@ -7,15 +7,14 @@ export const createTask = (owner, worker, taskObj) => {
   task.setOwner(owner);
   task.setWorker(worker);
   task.setTaskdetails(taskObj['task_details']);
-  task.setOwnerdeposit(taskObj['owner_deposit']);
-  task.setWorkerdeposit(taskObj['worker_deposit']);
-  task.setFinishdeadline(taskObj['finish_deadline']);
-  task.setReviewdeadline(taskObj['review_deadline']);
+  task.setOwnerdepositwei(taskObj['owner_deposit_wei']);
+  task.setWorkerdepositwei(taskObj['worker_deposit_wei']);
+  task.setDeadlinehours(taskObj['deadline_hours']);
+  task.setStatus(model.Task.TaskStatus.DRAFT);
   validateTask(task);
   return task;
 }
 
-// TODO: distinguish unset and reset for integer fields
 export const createOwnerUpdateOp = (index, comment, update) => {
   const taskOp = new model.TaskOp();
   const op = new model.OwnerUpdateOp();
@@ -26,17 +25,14 @@ export const createOwnerUpdateOp = (index, comment, update) => {
   if (update['task_details'] !== undefined) {
     op.setTaskdetails(update['task_details']);
   }
-  if (update['owner_deposit'] !== undefined) {
-    op.setOwnerdeposit(update['owner_deposit']);
+  if (update['owner_deposit_wei'] !== undefined) {
+    op.setOwnerdepositwei(update['owner_deposit_wei']);
   }
-  if (update['worker_deposit'] !== undefined) {
-    op.setWorkerdeposit(update['worker_deposit']);
+  if (update['worker_deposit_wei'] !== undefined) {
+    op.setWorkerdepositwei(update['worker_deposit_wei']);
   }
-  if (update['finish_deadline'] !== undefined) {
-    op.setFinishdeadline(update['finish_deadline']);
-  }
-  if (update['review_deadline'] !== undefined) {
-    op.setReviewdeadline(update['review_deadline']);
+  if (update['deadline_hours'] !== undefined) {
+    op.setDeadlinehours(update['deadline_hours']);
   }
   taskOp.setOwnerupdate(op);
   validateTaskOp(taskOp);
@@ -68,17 +64,14 @@ export const createRequestChangeOp = (index, comment, update) => {
   if (update['task_details'] !== undefined) {
     op.setTaskdetails(update['task_details']);
   }
-  if (update['owner_deposit'] !== undefined) {
-    op.setOwnerdeposit(update['owner_deposit']);
+  if (update['owner_deposit_wei'] !== undefined) {
+    op.setOwnerdepositwei(update['owner_deposit_wei']);
   }
-  if (update['worker_deposit'] !== undefined) {
-    op.setWorkerdeposit(update['worker_deposit']);
+  if (update['worker_deposit_wei'] !== undefined) {
+    op.setWorkerdepositwei(update['worker_deposit_wei']);
   }
-  if (update['finish_deadline'] !== undefined) {
-    op.setFinishdeadline(update['finish_deadline']);
-  }
-  if (update['review_deadline'] != undefined) {
-    op.setReviewdeadline(update['review_deadline']);
+  if (update['deadline_hours'] !== undefined) {
+    op.setDeadlinehours(update['deadline_hours']);
   }
   taskOp.setRequestchange(op)
   validateTaskOp(taskOp);

@@ -6,7 +6,6 @@ import IpfsContext from './IpfsContext.js';
 
 const IpfsProvider = (props) => {
   const [ipfs, setIpfs] = useState(null);
-  const [ipfsId, setIpfsId] = useState(null);
   const [ipfsInitError, setIpfsInitError] = useState(null);
 
   useEffect(() => {
@@ -18,7 +17,6 @@ const IpfsProvider = (props) => {
         IPFS.create().then(ipfs => {
           console.timeEnd('IPFS Started');
           setIpfs(ipfs);
-          ipfs.id().then(value => setIpfsId(value));
         });
       } catch (error) {
         console.error('IPFS init error:', error);
@@ -31,7 +29,6 @@ const IpfsProvider = (props) => {
         console.log('Stopping IPFS');
         ipfs.stop().catch(err => console.error(err));
         setIpfs(null);
-        setIpfsId(null);
         setIpfsInitError(null);
       }
     }
@@ -55,7 +52,7 @@ const IpfsProvider = (props) => {
     );
   } else {
     return (
-      <IpfsContext.Provider value={{ipfs, ipfsId}}>
+      <IpfsContext.Provider value={{ipfs}}>
         {props.children}
       </IpfsContext.Provider>
     );

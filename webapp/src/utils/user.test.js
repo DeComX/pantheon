@@ -38,9 +38,8 @@ it('create contacts', async () => {
 });
 
 it('create user', async () => {
-  const hexAddress = "0xd115bffabbdd893a6f7cea402e7338643ced44a6";
   const userObj = {
-    ethereumAddress: ethers.utils.arrayify(hexAddress),
+    ethereumAddress: '0xd115bffabbdd893a6f7cea402e7338643ced44a6',
     name: "Joe Doe",
     details: createLinkedData(model.LinkedData.DataType.PLAIN_TEXT, "abc"),
     contacts: [createContact(model.Contact.ContactType.OTHER, "other")]
@@ -53,9 +52,8 @@ it('create user', async () => {
 });
 
 it('create user with missing field', async () => {
-  const hexAddress = "0xd115bffabbdd893a6f7cea402e7338643ced44a6";
   const userObj = {
-    ethereumAddress: ethers.utils.arrayify(hexAddress),
+    ethereumAddress: '0xd115bffabbdd893a6f7cea402e7338643ced44a6',
   };
   const user = createUser(userObj);
   expect(user.getEthereumaddress()).toBe(userObj['ethereumAddress']);
@@ -65,9 +63,8 @@ it('create user with missing field', async () => {
 });
 
 it('update user', async () => {
-  const hexAddress = "0xd115bffabbdd893a6f7cea402e7338643ced44a6";
   const userObj = {
-    ethereumAddress: ethers.utils.arrayify(hexAddress),
+    ethereumAddress: '0xd115bffabbdd893a6f7cea402e7338643ced44a6',
     name: "Joe Doe",
     details: createLinkedData(model.LinkedData.DataType.PLAIN_TEXT, "abc"),
     contacts: [createContact(model.Contact.ContactType.OTHER, "other")]
@@ -86,9 +83,8 @@ it('update user', async () => {
 });
 
 it('update user with missing field', async () => {
-  const hexAddress = "0xd115bffabbdd893a6f7cea402e7338643ced44a6";
   const userObj = {
-    ethereumAddress: ethers.utils.arrayify(hexAddress),
+    ethereumAddress: '0xd115bffabbdd893a6f7cea402e7338643ced44a6',
     name: "Joe Doe",
     details: createLinkedData(model.LinkedData.DataType.PLAIN_TEXT, "abc"),
     contacts: [createContact(model.Contact.ContactType.OTHER, "other")]

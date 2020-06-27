@@ -1,21 +1,21 @@
 // validators should true if the value is valid and throw otherwise
 
-export const validateLinkedData = (linkedData) -> {
+export const validateLinkedData = (linkedData) => {
   return true;
 }
 
-export const validateContact = (contact) -> {
+export const validateContact = (contact) => {
   return true;
 }
 
-export const validateUser = (user) -> {
+export const validateUser = (user) => {
   return true;
 }
 
-export const validateTask = (task) -> {
+export const validateTask = (task) => {
   return true;
 }
 
-export const validateTaskOp = (taskOp) -> {
+export const validateTaskOp = (taskOp) => {
   return true;
 }

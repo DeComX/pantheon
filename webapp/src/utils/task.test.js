@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { createUser, createContact } from './user';
 import { createLinkedData, createUint64Override } from './common';
 import { ethers } from 'ethers';
@@ -19,84 +18,79 @@ const model = require('../proto/model_pb.js');
 
 const COMMENT = createLinkedData(model.LinkedData.DataType.PLAIN_TEXT, "comment");
 const USER1 = createUser({
-  ethereumAddress: ethers.utils.arrayify("0xd115bffabbdd893a6f7cea402e7338643ced44a6"),
+  ethereumAddress: "0xd115bffabbdd893a6f7cea402e7338643ced44a6",
   name: "User1",
-  task_details: createLinkedData(model.LinkedData.DataType.PLAIN_TEXT, "abc"),
+  details: createLinkedData(model.LinkedData.DataType.PLAIN_TEXT, "abc"),
   contacts: [createContact(model.Contact.ContactType.OTHER, "other")]
 });
 const USER2 = createUser({
-  ethereumAddress: ethers.utils.arrayify("0xd115bffabbdd893a6f7cea402e7338643ced55a7"),
+  ethereumAddress: "0xd115bffabbdd893a6f7cea402e7338643ced55a7",
   name: "User2"
 });
 
 it('create task', async () => {
   const taskObj = {
     task_details: createLinkedData(model.LinkedData.DataType.PLAIN_TEXT, "abc"),
-    owner_deposit: 1000,
-    worker_deposit: 100,
-    finish_deadline: 1591940028,
-    review_deadline: 1591950028
+    owner_deposit_wei: 1000,
+    worker_deposit_wei: 100,
+    deadline_hours: 1591940028
   };
   const task = createTask(USER1, USER2, taskObj);
   expect(task.getOwner()).toBe(USER1);
   expect(task.getWorker()).toBe(USER2);
   expect(task.getTaskdetails()).toBe(taskObj['task_details']);
-  expect(task.getOwnerdeposit()).toBe(taskObj['owner_deposit']);
-  expect(task.getWorkerdeposit()).toBe(taskObj['worker_deposit']);
-  expect(task.getFinishdeadline()).toBe(taskObj['finish_deadline']);
-  expect(task.getReviewdeadline()).toBe(taskObj['review_deadline']);
+  expect(task.getOwnerdepositwei()).toBe(taskObj['owner_deposit_wei']);
+  expect(task.getWorkerdepositwei()).toBe(taskObj['worker_deposit_wei']);
+  expect(task.getDeadlinehours()).toBe(taskObj['deadline_hours']);
+  expect(task.getStatus()).toBe(model.Task.TaskStatus.DRAFT);
 });
 
 it('create owner update op', async () => {
   const update = {
     task_details: createLinkedData(model.LinkedData.DataType.PLAIN_TEXT, "abc"),
-    owner_deposit: 1000,
-    worker_deposit: 100,
-    finish_deadline: 1591940028,
-    review_deadline: 1591950028
+    owner_deposit_wei: 1000,
+    worker_deposit_wei: 100,
+    deadline_hours: 1591940028
   };
   const op = createOwnerUpdateOp(1, COMMENT, update);
   expect(op.hasOwnerupdate()).toBe(true);
-  const requestChangeOp = op.getOwnerupdate();
+  const ownerUpdateOp = op.getOwnerupdate();
 
-  expect(requestChangeOp.getIndex()).toBe(1);
-  expect(requestChangeOp.getComment()).toBe(COMMENT);
-  expect(requestChangeOp.getTaskdetails()).toBe(update['task_details']);
-  expect(requestChangeOp.getOwnerdeposit()).toBe(update['owner_deposit']);
-  expect(requestChangeOp.getWorkerdeposit()).toBe(update['worker_deposit']);
-  expect(requestChangeOp.getFinishdeadline()).toBe(update['finish_deadline']);
-  expect(requestChangeOp.getReviewdeadline()).toBe(update['review_deadline']);
+  expect(ownerUpdateOp.getIndex()).toBe(1);
+  expect(ownerUpdateOp.getComment()).toBe(COMMENT);
+  expect(ownerUpdateOp.getTaskdetails()).toBe(update['task_details']);
+  expect(ownerUpdateOp.getOwnerdepositwei()).toBe(update['owner_deposit_wei']);
+  expect(ownerUpdateOp.getWorkerdepositwei()).toBe(update['worker_deposit_wei']);
+  expect(ownerUpdateOp.getDeadlinehours()).toBe(update['deadline_hours']);
 });
 
 it('create owner update op with missing fields', async () => {
   const update = {
-    worker_deposit: 0,
-    finish_deadline: 1591940028
+    worker_deposit_wei: 0,
+    deadline_hours: 1591940028
   };
   const op = createOwnerUpdateOp(2, COMMENT, update);
   expect(op.hasOwnerupdate()).toBe(true);
-  const requestChangeOp = op.getOwnerupdate();
+  const ownerUpdateOp = op.getOwnerupdate();
 
-  expect(requestChangeOp.getIndex()).toBe(2);
-  expect(requestChangeOp.getComment()).toBe(COMMENT);
+  expect(ownerUpdateOp.getIndex()).toBe(2);
+  expect(ownerUpdateOp.getComment()).toBe(COMMENT);
 
-  expect(requestChangeOp.hasTaskdetails()).toBe(false);
-  expect(requestChangeOp.hasOwnerdeposit()).toBe(false);
-  expect(requestChangeOp.hasReviewdeadline()).toBe(false);
+  expect(ownerUpdateOp.hasTaskdetails()).toBe(false);
+  expect(ownerUpdateOp.hasOwnerdepositwei()).toBe(false);
 
-  expect(requestChangeOp.hasWorkerdeposit()).toBe(true);
-  expect(requestChangeOp.getWorkerdeposit()).toBe(0);
-  expect(requestChangeOp.hasFinishdeadline()).toBe(true);
-  expect(requestChangeOp.getFinishdeadline()).toBe(update['finish_deadline']);
+  expect(ownerUpdateOp.hasWorkerdepositwei()).toBe(true);
+  expect(ownerUpdateOp.getWorkerdepositwei()).toBe(0);
+  expect(ownerUpdateOp.hasDeadlinehours()).toBe(true);
+  expect(ownerUpdateOp.getDeadlinehours()).toBe(update['deadline_hours']);
 });
 
 it('creaet request change op', async () => {
   const update = {
     task_details: createLinkedData(model.LinkedData.DataType.PLAIN_TEXT, "abc"),
-    owner_deposit: 1000,
-    worker_deposit: 100,
-    finish_deadline: 1591940028,
-    review_deadline: 1591950028
+    owner_deposit_wei: 1000,
+    worker_deposit_wei: 100,
+    deadline_hours: 1591940028
   };
   const op = createRequestChangeOp(1, COMMENT, update);
   expect(op.hasRequestchange()).toBe(true);
@@ -105,16 +99,15 @@ it('creaet request change op', async () => {
   expect(requestChangeOp.getIndex()).toBe(1);
   expect(requestChangeOp.getComment()).toBe(COMMENT);
   expect(requestChangeOp.getTaskdetails()).toBe(update['task_details']);
-  expect(requestChangeOp.getOwnerdeposit()).toBe(update['owner_deposit']);
-  expect(requestChangeOp.getWorkerdeposit()).toBe(update['worker_deposit']);
-  expect(requestChangeOp.getFinishdeadline()).toBe(update['finish_deadline']);
-  expect(requestChangeOp.getReviewdeadline()).toBe(update['review_deadline']);
+  expect(requestChangeOp.getOwnerdepositwei()).toBe(update['owner_deposit_wei']);
+  expect(requestChangeOp.getWorkerdepositwei()).toBe(update['worker_deposit_wei']);
+  expect(requestChangeOp.getDeadlinehours()).toBe(update['deadline_hours']);
 });
 
 it('creaet request change op with missing fields', async () => {
   const update = {
-    worker_deposit: 0,
-    finish_deadline: 1591940028
+    worker_deposit_wei: 0,
+    deadline_hours: 1591940028
   };
   const op = createRequestChangeOp(2, COMMENT, update);
   expect(op.hasRequestchange()).toBe(true);
@@ -124,13 +117,12 @@ it('creaet request change op with missing fields', async () => {
   expect(requestChangeOp.getComment()).toBe(COMMENT);
 
   expect(requestChangeOp.hasTaskdetails()).toBe(false);
-  expect(requestChangeOp.hasOwnerdeposit()).toBe(false);
-  expect(requestChangeOp.hasReviewdeadline()).toBe(false);
+  expect(requestChangeOp.hasOwnerdepositwei()).toBe(false);
 
-  expect(requestChangeOp.hasWorkerdeposit()).toBe(true);
-  expect(requestChangeOp.getWorkerdeposit()).toBe(0);
-  expect(requestChangeOp.hasFinishdeadline()).toBe(true);
-  expect(requestChangeOp.getFinishdeadline()).toBe(update['finish_deadline']);
+  expect(requestChangeOp.hasWorkerdepositwei()).toBe(true);
+  expect(requestChangeOp.getWorkerdepositwei()).toBe(0);
+  expect(requestChangeOp.hasDeadlinehours()).toBe(true);
+  expect(requestChangeOp.getDeadlinehours()).toBe(update['deadline_hours']);
 });
 
 it('creaet request for final review op', async () => {
