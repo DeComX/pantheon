@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-
 const path = require('path');
 const model = require('../proto/model_pb.js');
 

@@ -1,7 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import { createLinkedData } from './common';
-import { ethers } from 'ethers';
 import {
   createUser,
   updateUser,
