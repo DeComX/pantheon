@@ -11,10 +11,19 @@ const readAll = async (ipfs, filename) => {
 
 export const listAll = async (ipfs, dir) => {
   const files = [];
-  for await (const file of ipfs.files.ls(dir)) {
-    files.push(file.name);
+  try {
+    for await (const file of ipfs.files.ls(dir)) {
+      files.push(file.name);
+    }
+    return files;
+  } catch(error) {
+    // dir doesn't exist
+    if (error.code = 'ERR_NOT_FOUND') {
+      return [];
+    } else {
+      throw(error);
+    }
   }
-  return files;
 }
 
 export const fileExists = async (ipfs, filename) => {
@@ -22,9 +31,23 @@ export const fileExists = async (ipfs, filename) => {
   return files.includes(path.basename(filename));
 }
 
+export const fileStat = async (ipfs, filename) => {
+  try {
+    return await ipfs.files.stat(filename);
+  } catch(error) {
+    // file not found
+    if (error.code = 'ERR_NOT_FOUND') {
+      return undefined;
+    } else {
+      throw(error);
+    }
+  }
+}
+
 export const remove = async (ipfs, filename) => {
-  const exists = await fileExists(ipfs, filename);
-  if (exists) {
+  const stat = await fileStat(ipfs, filename);
+  if (stat !== undefined && stat.cid !== undefined) {
+    await ipfs.pin.rm(stat.cid);
     await ipfs.files.rm(filename);
   }
 }
