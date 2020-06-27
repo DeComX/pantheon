@@ -1,4 +1,3 @@
-import React from 'react';
 import IPFS from 'ipfs';
 
 import { createLinkedData } from '../utils/common';
