@@ -39,14 +39,14 @@ const CONTRACTS = JSON.stringify([
 
 let ipfsNode;
 
-beforeEach(async () => {
+beforeAll(async () => {
   await IPFS.create().then(ipfsCreated => {
     console.time('IPFS Started');
     ipfsNode = ipfsCreated;
   });
 });
 
-afterEach(async () => {
+afterAll(async () => {
   await ipfsNode.stop();
 });
 

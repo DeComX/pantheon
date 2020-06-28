@@ -25,15 +25,14 @@
   "scripts": {
     "start": "PORT=3001 react-scripts start",
     "build": "react-scripts build",
-    "push_test": "cross-env CI=true react-scripts test --env=jsdom",
-    "test": "react-scripts test",
+    "test": "cross-env CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "generate": "rc-autocomplete",
     "lint": "eslint src/**/*.js"
   },
   "husky": {
     "hooks": {
-      "pre-push": "npm run lint && npm push_test"
+      "pre-push": "npm run lint && npm test"
     }
   },
   "eslintConfig": {
