@@ -18,7 +18,7 @@ export const listAll = async (ipfs, dir) => {
     return files;
   } catch(error) {
     // dir doesn't exist
-    if (error.code = 'ERR_NOT_FOUND') {
+    if (error.code === 'ERR_NOT_FOUND') {
       return [];
     } else {
       throw(error);
@@ -36,7 +36,7 @@ export const fileStat = async (ipfs, filename) => {
     return await ipfs.files.stat(filename);
   } catch(error) {
     // file not found
-    if (error.code = 'ERR_NOT_FOUND') {
+    if (error.code === 'ERR_NOT_FOUND') {
       return undefined;
     } else {
       throw(error);
