@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package decomx.blockpin;
+
+message Transaction {
+  string senderAddress = 1;
+  string receiverAddress = 2;
+  string requestHash = 3;
+  uint64 costWei = 4;
+}
+
+message GetNonceRequest {
+  message Request {
+    uint64 nonce = 2;
+  }
+  string address = 1;
+  string signature = 2;
+  Request request = 3;
+}
+
+message GetInfoRequest {
+  message Request {
+    uint64 nonce = 1;
+    string mfsPath = 2;
+  }
+  string address = 1;
+  string signature = 2;
+  Request request = 3;
+}
+
+message PinRequest {
+  message Request {
+    uint64 nonce = 1;
+    string mfsPath = 2;
+    bool override = 3; // if set to false, will return error if path doesn't exist
+    uint64 expireAt = 4;
+    string cid = 5;
+    string content = 6; // optional, ensure the server has the file content
+  }
+  string address = 1;
+  string signature = 2;
+  Request request = 3;
+  Transaction transaction = 4;
+}
+
+message UnpinRequest {
+  message Request {
+    uint64 nonce = 3;
+    string mfsPath = 4; // unpin the file in the path
+    string content = 5;
+  }
+  string address = 1;
+  string signature = 2;
+  Request request = 3;
+  Transaction transaction = 4;
+}
+
+message GetNonceResponse {
+  uint64 nonce = 1;
+}
+
+message GetInfoResponse {
+  uint64 nonce = 1;
+  string cid = 2;
+  string mfsPath = 3;
+  uint64 byteSize = 4;
+  uint64 mtime = 5;
+}
+
+message PinResponse {
+  uint64 nonce = 1;
+  string cid = 2;
+  string mfsPath = 3;
+  uint64 expiredAt = 4;
+  Transaction transaction = 5;
+}
+
+message UnpinResponse {
+  uint64 nonce = 1;
+  string cid = 2;
+  string mfsPath = 3;
+  Transaction transaction = 4;
+}
+
+service BlockPin {
+  rpc GetNonce(GetNonceRequest) returns (GetNonceResponse) {}
+  rpc GetInfo(GetInfoRequest) returns (GetInfoResponse) {}
+  rpc Pin(PinRequest) returns (PinResponse) {}
+  rpc Unpin(UnpinRequest) returns (UnpinResponse) {}
+}
