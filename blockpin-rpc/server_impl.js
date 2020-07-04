@@ -1,11 +1,11 @@
 const ethers = require('ethers');
 const rocksdb = require('./db');
-const sha1 = require('js-sha1');
 
 const verifyAddress = (ProtoType, request) => {
-  const binaryData = ProtoType.encode(ProtoType.fromObject(request.request));
-  const hash = sha1(binaryData).hex();
-  if (request.address === ethers.utils.verifyMessage(hash, request.signature)) {
+  const message = ProtoType.encode(ProtoType.fromObject(request.request)).finish();
+  const hash = ethers.utils.keccak256(message);
+  const address = ethers.utils.verifyMessage(hash, request.signature);
+  if (request.address === address) {
     return Promise.resolve();
   } else {
     return Promise.reject({
@@ -36,9 +36,9 @@ const verify = (db, ProtoType, request) => {
     });
 };
 
-const dummy_info_response = (mfsPath) => {
+const dummy_info_response = () => {
   return {
-    mfsPath: mfsPath,
+    mfsPath: "/dir/",
     byteSize: 1000,
     mtime: new Date().getTime()
   };
@@ -46,21 +46,21 @@ const dummy_info_response = (mfsPath) => {
 
 exports.info = (db, proto) => (call, cb) => {
   const RequestType = proto.lookupType('decomx.blockpin.InfoRequest.Request');
-  verify(db, RequestType, request)
-    .then(() => cb(null, dummy_info_response(request.request.mfsPath)))
+  verify(db, RequestType, call.request)
+    .then(() => cb(null, dummy_info_response()))
     .catch(err => cb(err));
 };
 
 exports.pin = (db, proto) => (call, cb) => {
   const RequestType = proto.lookupType('decomx.blockpin.PinRequest.Request');
-  verify(db, RequestType, request)
+  verify(db, RequestType, call.request)
     .then(() => cb(null, {}))
     .catch(err => cb(err));
 };
 
 exports.unpin = (db, proto) => (call, cb) => {
   const RequestType = proto.lookupType('decomx.blockpin.UnpinRequest.Request');
-  verify(db, RequestType, request)
+  verify(db, RequestType, call.request)
     .then(() => cb(null, {}))
     .catch(err => cb(err));
 };

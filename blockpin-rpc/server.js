@@ -11,10 +11,10 @@ const proto = require("./proto");
 
 function getServer() {
   const server = new grpc.Server();
-  server.addService(proto.BlockPin.service, {
-    info: serverImpl.info(db, proto),
-    pin: serverImpl.pin(db, proto),
-    unpin: serverImpl.unpin(db, proto)
+  server.addService(proto.loader.BlockPin.service, {
+    info: serverImpl.info(db, proto.root),
+    pin: serverImpl.pin(db, proto.root),
+    unpin: serverImpl.unpin(db, proto.root)
   });
   return server;
 }

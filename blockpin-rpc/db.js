@@ -2,10 +2,10 @@ const timestampKey = (address) => {
   return address + "_timestamp_us";
 };
 
-const getTimestamp = (db, address) => {
+exports.getTimestamp = (db, address) => {
   const key = timestampKey(address);
   return new Promise((resolve, reject) => {
-    db.get(key).then((err, timestampUs) => {
+    db.get(key, (err, timestampUs) => {
       if (err) {
         if (err.notFound) {
           resolve(0); // starting from 0
@@ -21,7 +21,7 @@ const getTimestamp = (db, address) => {
   });
 };
 
-const updateTimestamp = (db, address, timestampUs) => {
+exports.updateTimestamp = (db, address, timestampUs) => {
   const key = timestampKey(address);
   return new Promise((resolve, reject) => {
     db.put(key, timestampUs, (err) => {
