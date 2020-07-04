@@ -8,5 +8,13 @@
     "start": "node server.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@grpc/proto-loader": "^0.5.4",
+    "ethers": "^5.0.3",
+    "grpc": "^1.24.3",
+    "js-ipfs": "0.0.301",
+    "js-sha1": "^0.6.0",
+    "level-rocksdb": "^4.0.0"
+  }
 }
