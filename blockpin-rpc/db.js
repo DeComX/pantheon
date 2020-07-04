@@ -1,37 +1,37 @@
-const nonceKey = (address) => {
-  return address + "_nonce";
+const timestampKey = (address) => {
+  return address + "_timestamp_us";
 };
 
-const getNonce = (db, address) => {
-  const key = nonceKey(address);
+const getTimestamp = (db, address) => {
+  const key = timestampKey(address);
   return new Promise((resolve, reject) => {
-    db.get(key).then((err, nonce) => {
+    db.get(key).then((err, timestampUs) => {
       if (err) {
         if (err.notFound) {
           resolve(0); // starting from 0
         } else {
-          console.log("nonce read error: ", key);
+          console.log("timestamp read error: ", key);
           reject({
             code: 'SERVER_ERROR', message: "database read error"
           });
         }
       }
-      resolve(nonce);
+      resolve(timestampUs);
     });
   });
 };
 
-const updateNonce = (db, address, nonce) => {
-  const key = nonceKey(address);
+const updateTimestamp = (db, address, timestampUs) => {
+  const key = timestampKey(address);
   return new Promise((resolve, reject) => {
-    db.put(key, nonce, (err) => {
+    db.put(key, timestampUs, (err) => {
       if (err) {
-        console.log("nonce update error: ", key, nonce);
+        console.log("timestamp update error: ", key, timestampUs);
         reject({
           code: 'SERVER_ERROR', message: "database write error"
         });
       }
-      resolve(nonce);
+      resolve(timestampUs);
     });
   });
 };

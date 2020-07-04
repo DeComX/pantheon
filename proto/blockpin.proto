@@ -9,18 +9,9 @@ message Transaction {
   uint64 costWei = 4;
 }
 
-message GetNonceRequest {
+message InfoRequest {
   message Request {
-    uint64 nonce = 2;
-  }
-  string address = 1;
-  string signature = 2;
-  Request request = 3;
-}
-
-message GetInfoRequest {
-  message Request {
-    uint64 nonce = 1;
+    uint64 timestampUs = 1;
     string mfsPath = 2;
   }
   string address = 1;
@@ -30,7 +21,7 @@ message GetInfoRequest {
 
 message PinRequest {
   message Request {
-    uint64 nonce = 1;
+    uint64 timestampUs = 1;
     string mfsPath = 2;
     bool override = 3; // if set to false, will return error if path doesn't exist
     uint64 expireAt = 4;
@@ -45,9 +36,8 @@ message PinRequest {
 
 message UnpinRequest {
   message Request {
-    uint64 nonce = 3;
-    string mfsPath = 4; // unpin the file in the path
-    string content = 5;
+    uint64 timestampUs = 1;
+    string mfsPath = 2; // unpin the file in the path
   }
   string address = 1;
   string signature = 2;
@@ -55,36 +45,28 @@ message UnpinRequest {
   Transaction transaction = 4;
 }
 
-message GetNonceResponse {
-  uint64 nonce = 1;
-}
-
-message GetInfoResponse {
-  uint64 nonce = 1;
-  string cid = 2;
-  string mfsPath = 3;
-  uint64 byteSize = 4;
-  uint64 mtime = 5;
+message InfoResponse {
+  string cid = 1;
+  string mfsPath = 2;
+  uint64 byteSize = 3;
+  uint64 mtime = 4;
 }
 
 message PinResponse {
-  uint64 nonce = 1;
-  string cid = 2;
-  string mfsPath = 3;
-  uint64 expiredAt = 4;
-  Transaction transaction = 5;
-}
-
-message UnpinResponse {
-  uint64 nonce = 1;
-  string cid = 2;
-  string mfsPath = 3;
+  string cid = 1;
+  string mfsPath = 2;
+  uint64 expiredAt = 3;
   Transaction transaction = 4;
 }
 
+message UnpinResponse {
+  string cid = 1;
+  string mfsPath = 2;
+  Transaction transaction = 3;
+}
+
 service BlockPin {
-  rpc GetNonce(GetNonceRequest) returns (GetNonceResponse) {}
-  rpc GetInfo(GetInfoRequest) returns (GetInfoResponse) {}
+  rpc Info(InfoRequest) returns (InfoResponse) {}
   rpc Pin(PinRequest) returns (PinResponse) {}
   rpc Unpin(UnpinRequest) returns (UnpinResponse) {}
 }

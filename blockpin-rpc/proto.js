@@ -1,7 +1,8 @@
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
 
-const PROTO_PATH = __dirname + '/../protos/blockpin.proto';
+const PROTO_PATH = __dirname + '/../proto/blockpin.proto';
+
 const packageDefinition = protoLoader.loadSync(
     PROTO_PATH,
     {keepCase: true,
@@ -12,4 +13,4 @@ const packageDefinition = protoLoader.loadSync(
     });
 const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 
-exports.blockpin = protoDescriptor.blockpin;
+module.exports = protoDescriptor.decomx.blockpin;
