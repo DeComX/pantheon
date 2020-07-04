@@ -13,6 +13,8 @@
     "@grpc/proto-loader": "^0.5.4",
     "ethers": "^5.0.3",
     "grpc": "^1.24.3",
+    "ipfs": "^0.47.0",
+    "ipfs-http-client": "^44.3.0",
     "js-ipfs": "0.0.301",
     "level-rocksdb": "^4.0.0",
     "path": "^0.12.7",

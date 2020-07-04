@@ -11,8 +11,8 @@ message Transaction {
 
 message InfoRequest {
   message Request {
-    uint64 timestampUs = 1;
-    string mfsPath = 2;
+    uint64 timestampMs = 1;
+    string path = 2;
   }
   string address = 1;
   string signature = 2;
@@ -21,12 +21,14 @@ message InfoRequest {
 
 message PinRequest {
   message Request {
-    uint64 timestampUs = 1;
-    string mfsPath = 2;
+    uint64 timestampMs = 1;
+    string path = 2;
     bool override = 3; // if set to false, will return error if path doesn't exist
     uint64 expireAt = 4;
-    string cid = 5;
-    string content = 6; // optional, ensure the server has the file content
+    oneof filesource_oneof {
+      string cid = 5;
+      string content = 6; // upload and pin
+    }
   }
   string address = 1;
   string signature = 2;
@@ -36,33 +38,29 @@ message PinRequest {
 
 message UnpinRequest {
   message Request {
-    uint64 timestampUs = 1;
-    string mfsPath = 2; // unpin the file in the path
+    uint64 timestampMs = 1;
+    string path = 2; // unpin the file in the path
   }
   string address = 1;
   string signature = 2;
-  Request request = 3;
   Transaction transaction = 4;
 }
 
 message InfoResponse {
   string cid = 1;
-  string mfsPath = 2;
+  string path = 2;
   uint64 byteSize = 3;
-  uint64 mtime = 4;
+  string expiredAt = 4;
 }
 
 message PinResponse {
-  string cid = 1;
-  string mfsPath = 2;
-  uint64 expiredAt = 3;
-  Transaction transaction = 4;
+  string cid = 1; // only for upload and pin
+  Transaction transaction = 2;
 }
 
 message UnpinResponse {
   string cid = 1;
-  string mfsPath = 2;
-  Transaction transaction = 3;
+  Transaction transaction = 2;
 }
 
 service BlockPin {

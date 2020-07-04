@@ -9,16 +9,18 @@ const db = level(dbPath);
 const serverImpl = require("./server_impl");
 const proto = require("./proto");
 
-function getServer() {
-  const server = new grpc.Server();
-  server.addService(proto.loader.BlockPin.service, {
-    info: serverImpl.info(db, proto.root),
-    pin: serverImpl.pin(db, proto.root),
-    unpin: serverImpl.unpin(db, proto.root)
-  });
-  return server;
-}
+const PORT = 50051;
 
-const pinServer = getServer();
-pinServer.bind('127.0.0.1:50051', grpc.ServerCredentials.createInsecure());
-pinServer.start();
+const ipfsClient = require('ipfs-http-client')
+const ipfs = ipfsClient('http://localhost:5001')
+
+const server = new grpc.Server();
+server.bind('127.0.0.1:' + PORT, grpc.ServerCredentials.createInsecure());
+
+server.addService(proto.loader.BlockPin.service, {
+  info: serverImpl.info(db, proto.root, ipfs),
+  pin: serverImpl.pin(db, proto.root, ipfs),
+  unpin: serverImpl.unpin(db, proto.root, ipfs)
+});
+console.log('Starting server at ' + PORT);
+server.start();

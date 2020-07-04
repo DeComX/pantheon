@@ -1,9 +1,9 @@
 const ethers = require('ethers');
 const rocksdb = require('./db');
+const utils = require('./utils');
+const ipfs = require('./ipfs');
 
-const verifyAddress = (ProtoType, request) => {
-  const message = ProtoType.encode(ProtoType.fromObject(request.request)).finish();
-  const hash = ethers.utils.keccak256(message);
+const verifyAddress = (hash, request) => {
   const address = ethers.utils.verifyMessage(hash, request.signature);
   if (request.address === address) {
     return Promise.resolve();
@@ -17,10 +17,13 @@ const verifyAddress = (ProtoType, request) => {
 const verifyTimestamp = (db, request) => {
   return rocksdb.getTimestamp(db, request.address)
       .then((lastTimestamp) => {
-        if (request.request.timestampUs > lastTimestamp) {
+        if (request.request.timestampMs > lastTimestamp) {
             return rocksdb.updateTimestamp(
-              db, request.address, request.request.timestampUs
-            )
+              db, request.address, request.request.timestampMs
+            ).then(() => {
+              // new user
+              return Promise.resolve(lastTimestamp === 0);
+            });
         } else {
           return Promise.reject({
             code: 'AUTH_FAILURE', message: 'invalid timestamp'
@@ -29,38 +32,42 @@ const verifyTimestamp = (db, request) => {
       });
 };
 
-const verify = (db, ProtoType, request) => {
-  return verifyAddress(ProtoType, request)
+const verify = (db, ipfsClient, hash, request) => {
+  return verifyAddress(hash, request)
     .then(() => {
       return verifyTimestamp(db, request);
-    });
+    })
+    .then(isNewUser => {
+      if (isNewUser) {
+        return ipfs.init(ipfsClient, request.address);
+      } else {
+        return Promise.resolve();
+      }
+    })
 };
 
-const dummy_info_response = () => {
-  return {
-    mfsPath: "/dir/",
-    byteSize: 1000,
-    mtime: new Date().getTime()
-  };
-};
-
-exports.info = (db, proto) => (call, cb) => {
-  const RequestType = proto.lookupType('decomx.blockpin.InfoRequest.Request');
-  verify(db, RequestType, call.request)
-    .then(() => cb(null, dummy_info_response()))
+exports.info = (db, protoRoot, ipfsClient) => (call, cb) => {
+  const hash = utils.hash(protoRoot, 'INFO', call.request.request);
+  verify(db, ipfsClient, hash, call.request)
+    .then(() => ipfs.info(ipfsClient, call.request.request))
+    .then((response) => cb(null, response))
     .catch(err => cb(err));
 };
 
-exports.pin = (db, proto) => (call, cb) => {
-  const RequestType = proto.lookupType('decomx.blockpin.PinRequest.Request');
-  verify(db, RequestType, call.request)
-    .then(() => cb(null, {}))
+exports.pin = (db, protoRoot, ipfsClient) => (call, cb) => {
+  const hash = utils.hash(protoRoot, 'PIN', call.request.request);
+  verify(db, ipfsClient, hash, call.request)
+    .then(() =>
+      ipfs.pin(ipfsClient, call.request))
+    .then((response) => cb(null, response))
     .catch(err => cb(err));
 };
 
-exports.unpin = (db, proto) => (call, cb) => {
-  const RequestType = proto.lookupType('decomx.blockpin.UnpinRequest.Request');
-  verify(db, RequestType, call.request)
+exports.unpin = (db, protoRoot, ipfsClient) => (call, cb) => {
+  const hash = utils.hash(protoRoot, 'UNPIN', call.request.request);
+  verify(db, ipfsClient, hash, call.request)
+    .then(() =>
+      ipfs.pin(ipfsClient, call.request))
     .then(() => cb(null, {}))
     .catch(err => cb(err));
 };
