@@ -12,7 +12,11 @@
   "dependencies": {
     "@grpc/proto-loader": "^0.5.4",
     "ethers": "^5.0.3",
+    "go-ipfs-dep": "^0.6.0",
     "grpc": "^1.24.3",
+    "ipfs": "^0.47.0",
+    "ipfs-http-client": "^44.3.0",
+    "ipfsd-ctl": "^4.1.1",
     "js-ipfs": "0.0.301",
     "level-rocksdb": "^4.0.0",
     "path": "^0.12.7",

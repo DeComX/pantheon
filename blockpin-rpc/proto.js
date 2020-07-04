@@ -11,11 +11,9 @@ const OPTIONS = {
   defaults: true,
   oneofs: true
 };
-
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, OPTIONS);
 const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
-
-const root = protobuf.loadSync(PROTO_PATH, );
-
 exports.loader = protoDescriptor.decomx.blockpin;
+
+const root = protobuf.loadSync(PROTO_PATH);
 exports.root = root;
