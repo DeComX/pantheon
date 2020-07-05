@@ -6,6 +6,7 @@ const homedir = require('os').homedir();
 const dbPath = path.join(homedir, 'db', 'blockpin');
 const db = level(dbPath);
 
+const Ctl = require('ipfsd-ctl')
 const serverImpl = require("./server_impl");
 const proto = require("./proto");
 
@@ -22,5 +23,5 @@ server.addService(proto.loader.BlockPin.service, {
   pin: serverImpl.pin(db, proto.root, ipfs),
   unpin: serverImpl.unpin(db, proto.root, ipfs)
 });
-console.log('Starting server at ' + PORT);
 server.start();
+console.log('Server started at ' + PORT);
