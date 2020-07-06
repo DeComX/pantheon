@@ -6,13 +6,14 @@ message Transaction {
   string senderAddress = 1;
   string receiverAddress = 2;
   string requestHash = 3;
-  uint64 costWei = 4;
+  uint64 price = 4;
 }
 
 message InfoRequest {
   message Request {
     uint64 timestampMs = 1;
     string path = 2;
+    bool listChildren = 3;
   }
   string address = 1;
   string signature = 2;
@@ -23,12 +24,9 @@ message PinRequest {
   message Request {
     uint64 timestampMs = 1;
     string path = 2;
-    bool override = 3; // if set to false, will return error if path doesn't exist
-    uint64 expireAt = 4;
-    oneof filesource_oneof {
-      string cid = 5;
-      string content = 6; // upload and pin
-    }
+    string cid = 3;
+    uint64 cumulativeSize = 4; // the total size after pin
+    bool override = 5; // if set to false, will throw if path already exist
   }
   string address = 1;
   string signature = 2;
@@ -40,26 +38,33 @@ message UnpinRequest {
   message Request {
     uint64 timestampMs = 1;
     string path = 2; // unpin the file in the path
+    uint64 cumulativeSize = 3; // the total size after unpin
   }
   string address = 1;
   string signature = 2;
+  Request request = 3;
   Transaction transaction = 4;
 }
 
 message InfoResponse {
+  message File {
+    string cid = 1;
+    string name = 2;
+    uint64 size = 3;
+    string type = 4;
+  }
   string cid = 1;
-  string path = 2;
-  uint64 byteSize = 3;
-  string expiredAt = 4;
+  uint64 size = 2;
+  uint64 cumulativeSize = 3;
+  string type = 4;
+  repeated File children = 5;
 }
 
 message PinResponse {
-  string cid = 1; // only for upload and pin
   Transaction transaction = 2;
 }
 
 message UnpinResponse {
-  string cid = 1;
   Transaction transaction = 2;
 }
 
