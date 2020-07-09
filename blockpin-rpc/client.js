@@ -120,9 +120,6 @@ const unpin = (path, size) => {
   });
 };
 
-const runInfoTest = async () => {
-};
-
 const runTest = async (path, size) => {
   const CID1 = "QmPxma8L25Z9fqv1EfBHLL3fR6JaZofwHZbhvJGkqbGBNU"; // 310
   const CID2 = "QmNZYpqCZE5vpcMDG2yVsRSD1zmSZ2b5dNBQNbWFPG1cgV"; // 175
