@@ -26,7 +26,6 @@ message PinRequest {
     string path = 2;
     string cid = 3;
     uint64 cumulativeSize = 4; // the total size after pin
-    bool override = 5; // if set to false, will throw if path already exist
   }
   string address = 1;
   string signature = 2;

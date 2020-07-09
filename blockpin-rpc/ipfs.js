@@ -1,9 +1,8 @@
 const grpc = require('grpc');
 const path = require('path');
-const CID = require('cids');
 
 const rootdir = (address) => {
-  return "/ethereum/" + address + "/";
+  return "/ethereum/" + address;
 };
 
 const ipfsPath = (cid) => {
@@ -23,10 +22,7 @@ const fileStatByMfsPath = (ipfs, path, throwIfNotExists) => {
     .catch(err => {
       if (err.message === 'file does not exist') {
         if (throwIfNotExists) {
-          return Promise.reject({
-            code: grpc.status.INVALID_ARGUMENT,
-            message: 'path does not exist'
-          });
+          return Promise.reject('path does not exist');
         } else {
           return false;
         }
@@ -36,18 +32,6 @@ const fileStatByMfsPath = (ipfs, path, throwIfNotExists) => {
       }
     });
 };
-
-const fieldStatByCid = (ipfs, cid) => {
-  return ipfs.object.stat(cid, {timeout: '10s'})
-    .then(stat => { return stat; })
-    .catch(err => {
-      console.log("read object stat error", err);
-      return Promise.reject({
-        code: grpc.status.INVALID_ARGUMENT,
-        message: 'cannot get information of cid ' + cid
-      });
-    });
-}
 
 const removePath = (ipfs, path) => {
   return ipfs.files.rm(path, {recursive: true})
@@ -70,60 +54,7 @@ const removePin = async (ipfs, cid) => {
   }
 };
 
-const processPin = async (ipfs, address, transaction, request) => {
-  const root = rootdir(address);
-  const mfsPath = path.join(root, request.path);
-
-  const stat = await fileStatByMfsPath(ipfs, mfsPath);
-  if (stat) {
-    console.log('File already exists: ' + mfsPath);
-    if (request.override) {
-      console.log('Overriding ' + mfsPath);
-      if (stat.cid.toString() !== request.cid) {
-        await fieldStatByCid(ipfs, request.cid); // validate cid
-        await removePath(ipfs, mfsPath);
-        await ipfs.files.cp(ipfsPath(request.cid), mfsPath);
-      }
-    } else {
-      return Promise.reject({
-        code: grpc.status.INVALID_ARGUMENT,
-        message: 'path to pin already exists'
-      });
-    }
-  } else {
-    await fieldStatByCid(ipfs, request.cid); // validate cid
-    await ipfs.files.mkdir(path.dirname(mfsPath), {parents: true});
-    await ipfs.files.cp(ipfsPath(request.cid), mfsPath);
-  }
-
-  const rootStat = await fileStatByMfsPath(ipfs, root, true);
-  if (rootStat.cumulativeSize == request.cumulativeSize) {
-    // TODO: validate and sign transaction
-    if (stat && stat.cid.toString() !== request.cid) {
-      await removePin(ipfs, stat.cid);
-      await ipfs.pin.add(new CID(request.cid));
-    }
-    console.log("Pinned " + request.cid + " at mfsPath");
-    return { transaction: transaction };
-  } else {
-    // restore and throw
-    console.log("Cumulative size not match, restoring...");
-    try {
-      await removePath(ipfs, mfsPath);
-      if (stat) {
-        await ipfs.files.cp(ipfsPath(stat.cid), mfsPath);
-      }
-    } catch (err) {
-      return Promise.reject(err);
-    }
-    return Promise.reject({
-      code: grpc.status.INVALID_ARGUMENT,
-      message: 'cumulative size not match'
-    });
-  }
-};
-
-const listChildren = async (ipfs, mfsPath, cid) => {
+const listChildren = async (ipfs, cid) => {
   const children = [];
   for await (const file of ipfs.ls(ipfsPath(cid))) {
     children.push({
@@ -137,8 +68,8 @@ const listChildren = async (ipfs, mfsPath, cid) => {
 };
 
 const processInfo = async (ipfs, address, request) => {
-  const root = rootdir(address);
-  const mfsPath = path.join(root, request.path);
+  const rootDir = rootdir(address);
+  const mfsPath = path.join(rootDir, request.path);
   const stat = await fileStatByMfsPath(ipfs, mfsPath, true);
   let response = {
     cid: stat.cid,
@@ -147,21 +78,55 @@ const processInfo = async (ipfs, address, request) => {
     type: stat.type
   };
   if (stat.type === 'directory' && request.listChildren) {
-    response.children = await listChildren(ipfs, mfsPath, stat.cid);
+    response.children = await listChildren(ipfs, stat.cid);
   }
   return response;
 };
 
-const processUnpin = async (ipfs, address, transaction, request) => {
-  const root = rootdir(address);
-  const mfsPath = path.join(root, request.path);
-  // ensure file exists
-  const stat = await fileStatByMfsPath(ipfs, mfsPath, true);
-  await ipfs.files.rm(mfsPath, {recursive: true});
-  await removePin(ipfs, stat.cid);
-  // TODO: sign transaction
-  return { transaction: transaction };
+const updateRoot = async (ipfs, rootDir, oldRoot, transaction, request) => {
+  const newRoot = await fileStatByMfsPath(ipfs, rootDir, true);
+  if (newRoot.cumulativeSize == request.cumulativeSize) {
+    // TODO: validate and sign transaction
+    if (newRoot.cid !== oldRoot.cid) {
+      await removePin(ipfs, oldRoot.cid);
+      await ipfs.pin.add(newRoot.cid);
+    }
+  } else {
+    console.log("Cumulative size not match, restoring...");
+    await removePath(ipfs, rootDir),
+    await ipfs.files.cp(ipfsPath(oldRoot.cid), rootDir);
+    return Promise.reject({
+      code: grpc.status.INVALID_ARGUMENT,
+      message: 'cumulative size not match'
+    });
+  }
 };
+
+const processPin = async (ipfs, address, transaction, request) => {
+  const rootDir = rootdir(address);
+  const mfsPath = path.normalize(path.join(rootDir, request.path));
+  const oldRootStat = await fileStatByMfsPath(ipfs, rootDir, true);
+  await ipfs.files.mkdir(path.dirname(mfsPath), {parents: true});
+  await ipfs.files.cp(ipfsPath(request.cid), mfsPath);
+  await updateRoot(ipfs, rootDir, oldRootStat, transaction, request);
+};
+
+const processUnpin = async (ipfs, address, transaction, request) => {
+  const rootDir = rootdir(address);
+  const mfsPath = path.normalize(path.join(rootDir, request.path));
+  const oldRootStat = await fileStatByMfsPath(ipfs, rootDir, true);
+  await removePath(ipfs, mfsPath);
+  if (path.normalize(request.path) === '/') {
+    await ipfs.files.mkdir(rootDir, {parents: true});
+  }
+  await updateRoot(ipfs, rootDir, oldRootStat, transaction, request);
+};
+
+exports.fileStatByMfsPath = (ipfs, address, userPath) => {
+  const rootDir = rootdir(address);
+  const mfsPath = path.normalize(path.join(rootDir, userPath));
+  return fileStatByMfsPath(ipfs, mfsPath, false);
+}
 
 exports.init = async (ipfs, address) => {
   await ipfs.files.mkdir(rootdir(address), {parents: true});

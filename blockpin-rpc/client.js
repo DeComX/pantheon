@@ -39,7 +39,7 @@ const getInfoRequest = async (path, listChildren, timestampUs) => {
 };
 
 const info = (path, listChildren, timestampUs) => {
-  getInfoRequest(path, listChildren, timestampUs)
+  return getInfoRequest(path, listChildren, timestampUs)
     .then(request => {
       return client.info(request)
         .then(response => {
@@ -55,14 +55,13 @@ const info = (path, listChildren, timestampUs) => {
     });
 };
 
-const getPinRequest = async (cid, size, override) => {
+const getPinRequest = async (cid, path, size) => {
   const timestampMs = new Date().getTime();
   const request = {
     timestampMs: timestampMs,
-    override: override || false,
     cumulativeSize: size,
     cid: cid,
-    path: "/test"
+    path: path
   };
   const hash = utils.hash(root, 'PIN', request);
   const signature = await wallet.signMessage(hash);
@@ -73,8 +72,8 @@ const getPinRequest = async (cid, size, override) => {
   };
 };
 
-const pin = (cid, size, override) => {
-  return getPinRequest(cid, size, override).then(request => {
+const pin = (cid, path, size) => {
+  return getPinRequest(cid, path, size).then(request => {
     return client.pin(request)
       .then(response => {
         console.log("------------------- pin: " + cid);
@@ -124,13 +123,18 @@ const runTest = async (path, size) => {
   const CID1 = "QmPxma8L25Z9fqv1EfBHLL3fR6JaZofwHZbhvJGkqbGBNU"; // 310
   const CID2 = "QmNZYpqCZE5vpcMDG2yVsRSD1zmSZ2b5dNBQNbWFPG1cgV"; // 175
   const INVALID_CID = "QmNZYpqCZE5vpcMDG2yVsRSD1zmSZ2b5dNBQN";
-  await pin(CID1, 310, true);
-  await pin(CID2, 175, false); // will throw
-  await pin(CID2, 175, true); // will override
-  await pin(CID2, 175, true); // identical, nothing happened
-  await pin(CID2, 175, false); // identical but still will throw
-  await pin(CID2, 275, true); // invalid size, will throw
-  await pin(INVALID_CID, 300, true); // invalid cid
+
+  await unpin("/test", 4); // cleanup, may throw
+
+  await pin(CID1, "/test", 310); // will pin
+  await pin(CID2, "/test", 175); // will throw
+  await unpin("/test", 4); // will unpin
+
+  await pin(CID2, "/test", 275); // invalid size, will throw
+  await pin(INVALID_CID, "/test", 300); // invalid cid, will throw
+  await pin(CID2, "/test/", 175); // invalid path, will throw
+
+  await pin(CID2, "/test", 175); // will pin
 
   await info("/", false);
   await info("/", true);
@@ -142,7 +146,7 @@ const runTest = async (path, size) => {
   await info("/test", true, new Date().getTime() - 600000);
 
   await unpin("/test/inside", 54);
-  await unpin("/test", 4, true);
+  await unpin("/", 4); // unpin root
 };
 
 runTest()
