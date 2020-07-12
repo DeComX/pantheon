@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package decomx.blockpin;
+
+message Transaction {
+  string senderAddress = 1;
+  string receiverAddress = 2;
+  string requestHash = 3;
+  uint64 price = 4;
+}
+
+message InfoRequest {
+  message Request {
+    uint64 timestampMs = 1;
+    string path = 2;
+    bool listChildren = 3;
+  }
+  string address = 1;
+  string signature = 2;
+  Request request = 3;
+}
+
+message PinRequest {
+  message Request {
+    uint64 timestampMs = 1;
+    string path = 2;
+    string cid = 3;
+    uint64 cumulativeSize = 4; // the total size after pin
+  }
+  string address = 1;
+  string signature = 2;
+  Request request = 3;
+  Transaction transaction = 4;
+}
+
+message UnpinRequest {
+  message Request {
+    uint64 timestampMs = 1;
+    string path = 2; // unpin the file in the path
+    uint64 cumulativeSize = 3; // the total size after unpin
+  }
+  string address = 1;
+  string signature = 2;
+  Request request = 3;
+  Transaction transaction = 4;
+}
+
+message InfoResponse {
+  message File {
+    string cid = 1;
+    string name = 2;
+    uint64 size = 3;
+    string type = 4;
+  }
+  string cid = 1;
+  uint64 size = 2;
+  uint64 cumulativeSize = 3;
+  string type = 4;
+  repeated File children = 5;
+}
+
+message PinResponse {
+  Transaction transaction = 2;
+}
+
+message UnpinResponse {
+  Transaction transaction = 2;
+}
+
+service BlockPin {
+  rpc Info(InfoRequest) returns (InfoResponse) {}
+  rpc Pin(PinRequest) returns (PinResponse) {}
+  rpc Unpin(UnpinRequest) returns (UnpinResponse) {}
+}
