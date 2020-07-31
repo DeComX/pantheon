@@ -23,11 +23,21 @@ function getLibrary(): Web3Provider {
   return library;
 }
 
+// //try input props
+// const taskStates = {
+//   ifMyTask: false,
+//   ifOwnedTask: true
+// };
+
+
+
 const App = (props) => {
   //Context definition: https://github.com/NoahZinsmeister/web3-react/tree/v6/docs#overview
   const context = useWeb3React();
   const { active, activate, deactivate } = context;
   const [connectError, setConnectError] = useState(null);
+
+
 
   useEffect(() => {
     if (!active) {
